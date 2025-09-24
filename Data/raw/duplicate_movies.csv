@@ -1,0 +1,306 @@
+name,rating,genre,year,released,score,votes,director,writer,star,country,budget,gross,company,runtime
+A Nightmare on Elm Street,R,Horror,1984,"November 16, 1984 (United States)",7.5,212000.0,Wes Craven,Wes Craven,Heather Langenkamp,United States,1800000.0,25507137.0,New Line Cinema,91.0
+A Nightmare on Elm Street,R,Crime,2010,"April 30, 2010 (United States)",5.2,95000.0,Samuel Bayer,Wesley Strick,Jackie Earle Haley,United States,35000000.0,115695182.0,New Line Cinema,95.0
+After the Wedding,PG-13,Drama,2019,"November 1, 2019 (United Kingdom)",6.3,6700.0,Bart Freundlich,Bart Freundlich,Julianne Moore,United States,,2790019.0,Sony Pictures Classics,112.0
+After the Wedding,R,Drama,2006,"May 11, 2007 (United States)",7.7,33000.0,Susanne Bier,Susanne Bier,Mads Mikkelsen,Denmark,,11632723.0,Zentropa Entertainments,120.0
+Aladdin,PG,Adventure,2019,"May 24, 2019 (United States)",6.9,239000.0,Guy Ritchie,John August,Will Smith,United Kingdom,183000000.0,1050693953.0,Walt Disney Pictures,128.0
+Aladdin,G,Animation,1992,"November 25, 1992 (United States)",8.0,382000.0,Ron Clements,Ron Clements,Scott Weinger,United States,28000000.0,504050219.0,Walt Disney Pictures,90.0
+Anna,R,Action,2019,"June 21, 2019 (United States)",6.6,69000.0,Luc Besson,Luc Besson,Sasha Luss,France,,31626978.0,Summit Entertainment,118.0
+Anna,PG-13,Drama,1987,"November 28, 1987 (United States)",6.5,639.0,Yurek Bogayevicz,Yurek Bogayevicz,Sally Kirkland,United States,,1236848.0,Magnus Films,100.0
+Anna,R,Drama,2013,"January 24, 2014 (Spain)",6.5,22000.0,Jorge Dorado,Guy Holmes,Mark Strong,Spain,7000000.0,1257142.0,The Safran Company,99.0
+Anna Karenina,R,Drama,2012,"September 7, 2012 (United Kingdom)",6.6,95000.0,Joe Wright,Tom Stoppard,Keira Knightley,United Kingdom,40600000.0,68929150.0,Universal Pictures,129.0
+Anna Karenina,PG-13,Drama,1997,"April 4, 1997 (United States)",6.3,5600.0,Bernard Rose,Lev Tolstoy,Sophie Marceau,United States,35000000.0,858553.0,Icon Entertainment International,108.0
+Annie,PG,Comedy,2014,"December 19, 2014 (United States)",5.3,35000.0,Will Gluck,Will Gluck,Quvenzhané Wallis,United States,65000000.0,136853506.0,Marcy Media,118.0
+Annie,PG,Comedy,1982,"June 18, 1982 (United States)",6.6,41000.0,John Huston,Carol Sobieski,Aileen Quinn,United States,50000000.0,57063861.0,Columbia Pictures,127.0
+Bad Boys,R,Action,1995,"April 7, 1995 (United States)",6.9,247000.0,Michael Bay,George Gallo,Will Smith,United States,19000000.0,141407024.0,Don Simpson/Jerry Bruckheimer Films,119.0
+Bad Boys,R,Crime,1983,"March 25, 1983 (United States)",7.2,14000.0,Rick Rosenthal,Richard Di Lello,Sean Penn,United States,,9190819.0,EMI Films,123.0
+Bad Company,PG-13,Action,2002,"June 7, 2002 (United States)",5.6,45000.0,Joel Schumacher,Gary M. Goodman,Anthony Hopkins,United States,70000000.0,66200782.0,Touchstone Pictures,116.0
+Bad Company,R,Crime,1995,"January 20, 1995 (United States)",5.4,2800.0,Damian Harris,Ross Thomas,Ellen Barkin,United States,15000000.0,3674841.0,Touchstone Pictures,108.0
+Beautiful Creatures,PG-13,Drama,2013,"February 14, 2013 (United States)",6.1,85000.0,Richard LaGravenese,Richard LaGravenese,Alice Englert,United States,60000000.0,60052138.0,Alcon Entertainment,124.0
+Beautiful Creatures,R,Comedy,2000,"January 19, 2001 (United Kingdom)",5.8,3600.0,Bill Eagles,Simon Donald,Rachel Weisz,United Kingdom,,313768.0,Arts Council of England,86.0
+Beauty and the Beast,PG,Family,2017,"March 17, 2017 (United States)",7.1,283000.0,Bill Condon,Stephen Chbosky,Emma Watson,United States,160000000.0,1264434525.0,Mandeville Films,129.0
+Beauty and the Beast,G,Animation,1991,"November 22, 1991 (United States)",8.0,424000.0,Gary Trousdale,Linda Woolverton,Paige O'Hara,United States,25000000.0,424967620.0,Walt Disney Pictures,84.0
+Black Sheep,PG-13,Comedy,1996,"February 2, 1996 (United States)",6.3,38000.0,Penelope Spheeris,Fred Wolf,Chris Farley,United States,,32417995.0,Broadway Pictures,87.0
+Black Sheep,Not Rated,Comedy,2006,"March 29, 2007 (New Zealand)",5.8,40000.0,Jonathan King,Jonathan King,Oliver Driver,New Zealand,,4947717.0,New Zealand Film Commission,87.0
+Bliss,R,Drama,1997,"April 14, 1997 (United States)",6.0,2300.0,Lance Young,Lance Young,Craig Sheffer,Canada,,294064.0,Triumph Films,103.0
+Bliss,R,Comedy,1985,"February 21, 1986 (United States)",6.9,1300.0,Ray Lawrence,Ray Lawrence,Barry Otto,Australia,,,Window III Productions,112.0
+Boiling Point,Not Rated,Action,1990,"November 19, 1999 (United States)",6.8,6300.0,Takeshi Kitano,Takeshi Kitano,Takeshi Kitano,Japan,,,Bandai Visual Company,96.0
+Boiling Point,R,Action,1993,"April 16, 1993 (United States)",5.0,5700.0,James B. Harris,Gerald Petievich,Wesley Snipes,United States,9000000.0,10058318.0,StudioCanal,92.0
+Child's Play,R,Fantasy,1988,"November 9, 1988 (United States)",6.6,91000.0,Tom Holland,Don Mancini,Catherine Hicks,United States,9000000.0,44196684.0,United Artists,87.0
+Child's Play,R,Drama,2019,"June 21, 2019 (United States)",5.8,47000.0,Lars Klevberg,Tyler Burton Smith,Tim Matheson,Canada,10000000.0,44907074.0,Orion Pictures,90.0
+Chocolat,PG-13,Drama,2000,"January 19, 2001 (United States)",7.2,181000.0,Lasse Hallström,Joanne Harris,Juliette Binoche,United Kingdom,25000000.0,152699976.0,Miramax,121.0
+Chocolat,PG-13,Drama,1988,May 1989 (United States),7.3,3100.0,Claire Denis,Claire Denis,Isaach De Bankolé,France,,2319801.0,Caroline Productions,105.0
+Clash of the Titans,PG-13,Action,2010,"April 2, 2010 (United States)",5.8,274000.0,Louis Leterrier,Travis Beacham,Sam Worthington,United States,125000000.0,493214993.0,Warner Bros.,106.0
+Clash of the Titans,PG,Action,1981,"June 12, 1981 (United States)",6.9,42000.0,Desmond Davis,Beverley Cross,Laurence Olivier,United Kingdom,15000000.0,41092328.0,Charles H. Schneer Productions,118.0
+Cocktail,Not Rated,Comedy,2012,"July 13, 2012 (United Kingdom)",6.3,14000.0,Homi Adajania,Imtiaz Ali,Saif Ali Khan,United Kingdom,7980000.0,2724695.0,Cocktail Film,146.0
+Cocktail,R,Comedy,1988,"July 29, 1988 (United States)",5.9,81000.0,Roger Donaldson,Heywood Gould,Tom Cruise,United States,20000000.0,171504781.0,Touchstone Pictures,104.0
+Conan the Barbarian,R,Action,1982,"May 14, 1982 (United States)",6.9,141000.0,John Milius,Robert E. Howard,Arnold Schwarzenegger,United States,20000000.0,68851475.0,Universal Pictures,129.0
+Conan the Barbarian,R,Action,2011,"August 19, 2011 (United States)",5.2,96000.0,Marcus Nispel,Thomas Dean Donnelly,Jason Momoa,United States,90000000.0,63523283.0,Lionsgate,113.0
+Control,R,Comedy,2003,"November 20, 2003 (Hungary)",7.6,25000.0,Nimród Antal,Jim Adler,Sándor Csányi,Hungary,,1277800.0,Café Film,111.0
+Control,R,Biography,2007,"September 26, 2007 (France)",7.7,63000.0,Anton Corbijn,Deborah Curtis,Sam Riley,United Kingdom,,8159508.0,Becker Films,122.0
+Crash,NC-17,Drama,1996,"March 21, 1997 (United States)",6.4,54000.0,David Cronenberg,J.G. Ballard,James Spader,Canada,9000000.0,2671291.0,Alliance Communications Corporation,100.0
+Crash,R,Crime,2004,"May 6, 2005 (United States)",7.7,424000.0,Paul Haggis,Paul Haggis,Don Cheadle,United States,6500000.0,98410061.0,Bob Yari Productions,112.0
+Crossroads,R,Drama,1986,"March 14, 1986 (United States)",7.1,15000.0,Walter Hill,John Fusco,Ralph Macchio,United States,,5839031.0,Columbia Pictures,99.0
+Crossroads,PG-13,Comedy,2002,"February 15, 2002 (United States)",3.6,39000.0,Tamra Davis,Shonda Rhimes,Britney Spears,United States,12000000.0,61141030.0,Fuzzy Bunny Films (I),93.0
+Deadfall,R,Crime,1993,"October 8, 1993 (United States)",4.0,3000.0,Christopher Coppola,Christopher Coppola,Michael Biehn,United States,10000000.0,18369.0,Trimark Pictures,98.0
+Deadfall,R,Crime,2012,"November 9, 2012 (Bulgaria)",6.3,39000.0,Stefan Ruzowitzky,Zach Dean,Eric Bana,France,12000000.0,1946254.0,Magnolia Pictures,95.0
+Death at a Funeral,R,Comedy,2010,"April 16, 2010 (United States)",5.7,48000.0,Neil LaBute,Dean Craig,Chris Rock,United States,21000000.0,49050886.0,Screen Gems,92.0
+Death at a Funeral,R,Comedy,2007,"September 7, 2007 (United States)",7.4,111000.0,Frank Oz,Dean Craig,Matthew Macfadyen,United States,9000000.0,46789413.0,Sidney Kimmel Entertainment,90.0
+Dream Lover,R,Drama,1993,"May 6, 1994 (United States)",6.2,4500.0,Nicholas Kazan,Nicholas Kazan,James Spader,United States,,256264.0,PolyGram Filmed Entertainment,103.0
+Dream Lover,R,Crime,1986,"April 2, 1986 (France)",4.9,503.0,Alan J. Pakula,Jon Boorstin,Kristy McNichol,United States,,502237.0,Metro-Goldwyn-Mayer (MGM),104.0
+Endless Love,PG-13,Drama,2014,"February 14, 2014 (United States)",6.3,42000.0,Shana Feste,Shana Feste,Gabriella Wilde,United States,20000000.0,34718173.0,Bluegrass Films,104.0
+Endless Love,R,Drama,1981,"July 17, 1981 (United States)",4.9,7600.0,Franco Zeffirelli,Scott Spencer,Brooke Shields,United States,,32492674.0,PolyGram Filmed Entertainment,116.0
+Everybody's Fine,PG-13,Drama,1990,"May 31, 1991 (United States)",7.7,3700.0,Giuseppe Tornatore,Massimo De Rita,Marcello Mastroianni,Italy,,1745470.0,Erre Produzioni,118.0
+Everybody's Fine,PG-13,Adventure,2009,"December 4, 2009 (United States)",7.1,60000.0,Kirk Jones,Kirk Jones,Robert De Niro,United States,21000000.0,16443609.0,Miramax,99.0
+Fair Game,R,Action,1995,"November 3, 1995 (United States)",4.3,12000.0,Andrew Sipes,Paula Gosling,William Baldwin,United States,50000000.0,11534477.0,Warner Bros.,91.0
+Fair Game,PG-13,Biography,2010,"December 3, 2010 (United States)",6.8,47000.0,Doug Liman,Jez Butterworth,Naomi Watts,United States,22000000.0,25806953.0,River Road Entertainment,108.0
+Fame,R,Drama,1980,"May 16, 1980 (United States)",6.6,21000.0,Alan Parker,Christopher Gore,Eddie Barth,United States,,21202829.0,Metro-Goldwyn-Mayer (MGM),134.0
+Fame,PG,Comedy,2009,"September 25, 2009 (United States)",5.1,16000.0,Kevin Tancharoen,Allison Burnett,Kelsey Grammer,United States,18000000.0,77211836.0,Metro-Goldwyn-Mayer (MGM),107.0
+Fantastic Four,PG-13,Action,2015,"August 7, 2015 (United States)",4.2,156000.0,Josh Trank,Jeremy Slater,Miles Teller,United States,120000000.0,167882881.0,Twentieth Century Fox,100.0
+Fantastic Four,PG-13,Action,2005,"July 8, 2005 (United States)",5.7,316000.0,Tim Story,Mark Frost,Ioan Gruffudd,United States,100000000.0,333535934.0,Twentieth Century Fox,106.0
+Fearless,PG-13,Action,2006,"September 22, 2006 (United States)",7.6,74000.0,Ronny Yu,Chris Chow,Jet Li,China,,68072848.0,Golden Harvest Company,104.0
+Fearless,R,Drama,1993,"November 5, 1993 (United States)",7.1,22000.0,Peter Weir,Rafael Yglesias,Jeff Bridges,United States,,6995302.0,Spring Creek Productions,122.0
+Fever Pitch,R,Comedy,1997,"April 4, 1997 (United Kingdom)",6.7,10000.0,David Evans,Nick Hornby,Colin Firth,United Kingdom,,3736.0,Channel Four Films,102.0
+Fever Pitch,R,Drama,1985,"November 22, 1985 (United States)",4.1,243.0,Richard Brooks,Richard Brooks,Ryan O'Neal,United States,7000000.0,618847.0,Metro-Goldwyn-Mayer (MGM),96.0
+Fever Pitch,PG-13,Comedy,2005,"April 8, 2005 (United States)",6.2,43000.0,Bobby Farrelly,Lowell Ganz,Drew Barrymore,United States,30000000.0,50605163.0,Fox 2000 Pictures,104.0
+Flatliners,PG-13,Drama,2017,"September 29, 2017 (United States)",5.2,44000.0,Niels Arden Oplev,Peter Filardi,Elliot Page,United States,19000000.0,45158254.0,Columbia Pictures,109.0
+Flatliners,R,Drama,1990,"August 10, 1990 (United States)",6.6,82000.0,Joel Schumacher,Peter Filardi,Kiefer Sutherland,United States,26000000.0,61489265.0,Columbia Pictures,115.0
+Footloose,PG-13,Comedy,2011,"October 14, 2011 (United States)",5.9,47000.0,Craig Brewer,Dean Pitchford,Kenny Wormald,United States,24000000.0,63543328.0,Paramount Pictures,113.0
+Footloose,PG,Drama,1984,"February 17, 1984 (United States)",6.6,73000.0,Herbert Ross,Dean Pitchford,Kevin Bacon,United States,8200000.0,80039064.0,Paramount Pictures,107.0
+Forever Young,PG,Drama,1992,"December 16, 1992 (United States)",6.3,45000.0,Steve Miner,J.J. Abrams,Mel Gibson,United States,,127956187.0,Warner Bros.,102.0
+Forever Young,Not Rated,Drama,1983,"January 29, 1986 (United States)",6.7,51.0,David Drury,Ray Connolly,James Aubrey,United Kingdom,,,Channel Four Films,84.0
+Friday the 13th,R,Horror,2009,"February 13, 2009 (United States)",5.5,100000.0,Marcus Nispel,Victor Miller,Jared Padalecki,United States,19000000.0,91509154.0,New Line Cinema,97.0
+Friday the 13th,R,Horror,1980,"May 9, 1980 (United States)",6.4,123000.0,Sean S. Cunningham,Victor Miller,Betsy Palmer,United States,550000.0,39754601.0,Paramount Pictures,95.0
+Fright Night,R,Comedy,2011,"August 19, 2011 (United States)",6.4,101000.0,Craig Gillespie,Marti Noxon,Anton Yelchin,United States,30000000.0,41002607.0,Dreamworks Pictures,106.0
+Fright Night,R,Fantasy,1985,"August 2, 1985 (United States)",7.1,63000.0,Tom Holland,Tom Holland,Chris Sarandon,United States,9000000.0,24922237.0,Columbia Pictures,106.0
+Frozen,R,Adventure,2010,"March 25, 2010 (Kazakhstan)",6.1,70000.0,Adam Green,Adam Green,Shawn Ashmore,United States,,3843774.0,A Bigger Boat,93.0
+Frozen,PG,Animation,2013,"November 27, 2013 (United States)",7.4,585000.0,Chris Buck,Jennifer Lee,Kristen Bell,United States,150000000.0,1281508100.0,Walt Disney Animation Studios,102.0
+Ghost in the Shell,PG-13,Action,2017,"March 31, 2017 (United States)",6.3,202000.0,Rupert Sanders,Shirow Masamune,Scarlett Johansson,United States,110000000.0,169846945.0,Paramount Pictures,107.0
+Ghost in the Shell,TV-MA,Animation,1995,"March 29, 1996 (United States)",8.0,133000.0,Mamoru Oshii,Shirow Masamune,Atsuko Tanaka,Japan,,516540.0,Kôdansha,83.0
+Ghostbusters,PG-13,Action,2016,"July 15, 2016 (United States)",6.7,209000.0,Paul Feig,Katie Dippold,Melissa McCarthy,United States,144000000.0,229147509.0,Columbia Pictures,117.0
+Ghostbusters,PG,Action,1984,"June 8, 1984 (United States)",7.8,365000.0,Ivan Reitman,Dan Aykroyd,Bill Murray,United States,30000000.0,296187079.0,Columbia Pictures,105.0
+Gladiator,R,Action,1992,"March 6, 1992 (United States)",6.5,8500.0,Rowdy Herrington,Djordje Milicevic,James Marshall,United States,20000000.0,9223441.0,Columbia Pictures,101.0
+Gladiator,R,Action,2000,"May 5, 2000 (United States)",8.5,1400000.0,Ridley Scott,David Franzoni,Russell Crowe,United States,103000000.0,465380802.0,Dreamworks Pictures,155.0
+Godzilla,PG-13,Action,1998,"May 20, 1998 (United States)",5.4,186000.0,Roland Emmerich,Dean Devlin,Matthew Broderick,Japan,130000000.0,379014294.0,Centropolis Film Productions,139.0
+Godzilla,PG-13,Action,2014,"May 16, 2014 (United States)",6.4,394000.0,Gareth Edwards,Ishirô Honda,Aaron Taylor-Johnson,United States,160000000.0,524976069.0,Warner Bros.,123.0
+Great Expectations,R,Drama,1998,"January 30, 1998 (United States)",6.8,52000.0,Alfonso Cuarón,Charles Dickens,Ethan Hawke,United States,25000000.0,55494066.0,Art Linson Productions,111.0
+Great Expectations,PG-13,Drama,2012,"November 8, 2013 (United States)",6.4,13000.0,Mike Newell,David Nicholls,Toby Irvine,United Kingdom,,6202879.0,BBC Films,128.0
+Hairspray,PG,Comedy,1988,"February 26, 1988 (United States)",7.0,20000.0,John Waters,John Waters,Sonny Bono,United States,2000000.0,6673032.0,New Line Cinema,92.0
+Hairspray,PG,Comedy,2007,"July 20, 2007 (United States)",6.6,122000.0,Adam Shankman,Leslie Dixon,John Travolta,United States,75000000.0,203553311.0,New Line Cinema,117.0
+Halloween,R,Crime,2018,"October 19, 2018 (United States)",6.5,126000.0,David Gordon Green,John Carpenter,Jamie Lee Curtis,United States,10000000.0,255614941.0,Blumhouse Productions,106.0
+Halloween,R,Horror,2007,"August 31, 2007 (United States)",6.1,111000.0,Rob Zombie,Rob Zombie,Scout Taylor-Compton,United States,15000000.0,80460948.0,Dimension Films,109.0
+Halloween II,R,Horror,2009,"August 28, 2009 (United States)",4.8,50000.0,Rob Zombie,Rob Zombie,Scout Taylor-Compton,United States,15000000.0,39421467.0,Dimension Films,105.0
+Halloween II,R,Horror,1981,"October 30, 1981 (United States)",6.5,77000.0,Rick Rosenthal,John Carpenter,Jamie Lee Curtis,United States,2500000.0,25533818.0,Dino De Laurentiis Company,92.0
+Hamlet,PG-13,Drama,1996,"December 25, 1996 (United States)",7.7,37000.0,Kenneth Branagh,William Shakespeare,Kenneth Branagh,United Kingdom,18000000.0,4770222.0,Castle Rock Entertainment,242.0
+Hamlet,PG,Drama,1990,"January 18, 1991 (United States)",6.7,22000.0,Franco Zeffirelli,William Shakespeare,Mel Gibson,United States,,20710451.0,Icon Productions,135.0
+Hamlet,R,Drama,2000,"June 23, 2000 (United States)",6.0,9200.0,Michael Almereyda,William Shakespeare,Ethan Hawke,United States,2000000.0,2046433.0,double A Films,112.0
+Heartbreakers,R,Drama,1984,"September 28, 1984 (United States)",5.9,456.0,Bobby Roth,Bobby Roth,Peter Coyote,United States,,148750.0,Jethro Films Production,98.0
+Heartbreakers,PG-13,Comedy,2001,"March 23, 2001 (United States)",6.2,52000.0,David Mirkin,Robert Dunn,Sigourney Weaver,United States,35000000.0,57756408.0,Davis Entertainment,123.0
+Heat,R,Crime,1995,"December 15, 1995 (United States)",8.2,596000.0,Michael Mann,Michael Mann,Al Pacino,United States,60000000.0,187436818.0,Warner Bros.,170.0
+Heat,R,Action,1986,"March 13, 1987 (United States)",5.6,1900.0,Dick Richards,William Goldman,Burt Reynolds,United States,17000000.0,2793214.0,Escalante Productions,101.0
+Hellboy,R,Action,2019,"April 12, 2019 (United States)",5.2,82000.0,Neil Marshall,Andrew Cosby,David Harbour,United States,50000000.0,55065289.0,Summit Entertainment,120.0
+Hellboy,PG-13,Action,2004,"April 2, 2004 (United States)",6.8,312000.0,Guillermo del Toro,Guillermo del Toro,Ron Perlman,United States,66000000.0,99378985.0,Revolution Studios,122.0
+Hercules,PG,Adventure,1983,"August 26, 1983 (United States)",4.0,3600.0,Luigi Cozzi,Luigi Cozzi,Lou Ferrigno,Italy,2500000.0,10676194.0,Cannon Films Inc.,98.0
+Hercules,G,Animation,1997,"June 27, 1997 (United States)",7.3,212000.0,Ron Clements,Ron Clements,Tate Donovan,United States,85000000.0,252712101.0,Walt Disney Pictures,93.0
+Hercules,PG-13,Action,2014,"July 25, 2014 (United States)",6.0,149000.0,Brett Ratner,Ryan J. Condal,Dwayne Johnson,United States,100000000.0,244819862.0,Paramount Pictures,98.0
+Hero,PG-13,Comedy,1992,"October 2, 1992 (United States)",6.5,22000.0,Stephen Frears,Laura Ziskin,Dustin Hoffman,United States,42000000.0,19507345.0,Columbia Pictures,119.0
+Hero,PG-13,Action,2002,"August 27, 2004 (United States)",7.9,176000.0,Yimou Zhang,Feng Li,Jet Li,China,31000000.0,177395557.0,Edko Films,120.0
+Hot Pursuit,PG-13,Action,2015,"May 8, 2015 (United States)",5.2,49000.0,Anne Fletcher,David Feeney,Reese Witherspoon,United States,35000000.0,51380201.0,Metro-Goldwyn-Mayer (MGM),87.0
+Hot Pursuit,PG-13,Comedy,1987,"May 8, 1987 (United States)",5.8,3500.0,Steven Lisberger,Steven Lisberger,John Cusack,United States,,4215849.0,RKO Pictures,93.0
+Impulse,R,Horror,1984,"September 28, 1984 (United States)",5.9,1300.0,Graham Baker,Nicholas Kazan,Tim Matheson,United States,10000000.0,2773433.0,ABC Motion Pictures,91.0
+Impulse,R,Crime,1990,"April 6, 1990 (United States)",5.7,1200.0,Sondra Locke,John DeMarco,Theresa Russell,United States,9000000.0,2544504.0,Warner Bros.,109.0
+Independence Day,R,Drama,1983,"September 9, 1983 (Denmark)",6.5,458.0,Robert Mandel,Alice Hoffman,Kathleen Quinlan,United States,,,Warner Bros.,110.0
+Independence Day,PG-13,Action,1996,"July 3, 1996 (United States)",7.0,543000.0,Roland Emmerich,Dean Devlin,Will Smith,United States,75000000.0,817400891.0,Twentieth Century Fox,145.0
+Insomnia,R,Drama,2002,"May 24, 2002 (United States)",7.2,281000.0,Christopher Nolan,Hillary Seitz,Al Pacino,United States,46000000.0,113758770.0,Alcon Entertainment,118.0
+Insomnia,Not Rated,Crime,1997,"May 29, 1998 (United States)",7.3,14000.0,Erik Skjoldbjærg,Nikolaj Frobenius,Stellan Skarsgård,Norway,,227569.0,Norsk Film,96.0
+It Takes Two,PG-13,Comedy,1988,"July 13, 1988 (United States)",5.4,688.0,David Beaird,Richard Christian Matheson,George Newbern,United States,,344375.0,United Artists,81.0
+It Takes Two,PG,Comedy,1995,"November 17, 1995 (United States)",5.9,21000.0,Andy Tennant,Deborah Dean Davis,Kirstie Alley,United States,,19474589.0,Dualstar Productions,101.0
+Jane Eyre,PG-13,Drama,2011,"April 22, 2011 (United States)",7.3,83000.0,Cary Joji Fukunaga,Charlotte Brontë,Mia Wasikowska,United Kingdom,,34710627.0,Focus Features,120.0
+Jane Eyre,PG,Drama,1996,"April 12, 1996 (United States)",6.8,9200.0,Franco Zeffirelli,Charlotte Brontë,William Hurt,France,,5200601.0,Cineritino S.r.L.,112.0
+Legend,PG,Adventure,1985,"April 18, 1986 (United States)",6.4,62000.0,Ridley Scott,William Hjortsberg,Tom Cruise,United States,24500000.0,15502112.0,Legend Production Company,94.0
+Legend,R,Biography,2015,"November 20, 2015 (United States)",6.9,164000.0,Brian Helgeland,Brian Helgeland,Tom Hardy,United Kingdom,30000000.0,42972994.0,Cross Creek Pictures,132.0
+Les Misérables,PG-13,Crime,1998,"May 1, 1998 (United States)",7.4,39000.0,Bille August,Victor Hugo,Liam Neeson,United Kingdom,,14096321.0,Mandalay Entertainment,134.0
+Les Misérables,PG-13,Drama,2012,"December 25, 2012 (United States)",7.6,315000.0,Tom Hooper,William Nicholson,Hugh Jackman,United Kingdom,61000000.0,441809770.0,Universal Pictures,158.0
+Leviathan,R,Crime,2014,"February 5, 2015 (Russia)",7.6,51000.0,Andrey Zvyagintsev,Oleg Negin,Aleksey Serebryakov,Russia,,4439481.0,Non-Stop Productions,140.0
+Leviathan,R,Adventure,1989,"March 17, 1989 (United States)",5.8,19000.0,George P. Cosmatos,David Webb Peoples,Peter Weller,United States,25000000.0,15704614.0,Filmauro,98.0
+Life,R,Horror,2017,"March 24, 2017 (United States)",6.6,213000.0,Daniel Espinosa,Rhett Reese,Jake Gyllenhaal,United Kingdom,58000000.0,100541806.0,Columbia Pictures,104.0
+Life,R,Comedy,1999,"April 16, 1999 (United States)",6.8,47000.0,Ted Demme,Robert Ramsey,Eddie Murphy,United States,80000000.0,73475268.0,Imagine Entertainment,108.0
+Little Women,PG,Drama,1994,"December 25, 1994 (United States)",7.3,54000.0,Gillian Armstrong,Louisa May Alcott,Susan Sarandon,United States,18000000.0,50083616.0,Columbia Pictures,115.0
+Little Women,PG,Drama,2019,"December 25, 2019 (United States)",7.8,159000.0,Greta Gerwig,Greta Gerwig,Saoirse Ronan,United States,40000000.0,216601214.0,Columbia Pictures,135.0
+Lonely Hearts,R,Biography,2006,"October 21, 2006 (Taiwan)",6.4,20000.0,Todd Robinson,Todd Robinson,John Travolta,Germany,18000000.0,2520835.0,Millennium Films,108.0
+Lonely Hearts,R,Comedy,1982,"October 21, 1982 (Australia)",6.8,336.0,Paul Cox,Paul Cox,Wendy Hughes,Australia,,777087.0,Adam Packer Film Productions,106.0
+Man of the House,PG-13,Comedy,2005,"February 25, 2005 (United States)",5.4,23000.0,Stephen Herek,John J. McLaughlin,Tommy Lee Jones,United States,40000000.0,21577624.0,Revolution Studios,100.0
+Man of the House,PG,Comedy,1995,"March 3, 1995 (United States)",5.2,8900.0,James Orr,David E. Peckinpah,Chevy Chase,United States,,40070995.0,All Girl Productions,96.0
+Man on Fire,R,Action,1987,"September 4, 1987 (France)",5.9,1900.0,Élie Chouraqui,A.J. Quinnell,Scott Glenn,France,,519596.0,7 Films Cinéma,92.0
+Man on Fire,R,Action,2004,"April 23, 2004 (United States)",7.7,336000.0,Tony Scott,A.J. Quinnell,Denzel Washington,United States,70000000.0,130834852.0,Fox 2000 Pictures,146.0
+Masterminds,PG-13,Biography,2015,"September 30, 2016 (United States)",5.8,52000.0,Jared Hess,Chris Bowman,Zach Galifianakis,United States,25000000.0,29674699.0,Broadway Video,95.0
+Masterminds,PG-13,Action,1997,"August 22, 1997 (United States)",5.2,3400.0,Roger Christian,Floyd Byars,Patrick Stewart,United States,,1935539.0,Columbia Pictures,106.0
+Much Ado About Nothing,PG-13,Comedy,1993,"July 2, 1993 (United States)",7.3,46000.0,Kenneth Branagh,William Shakespeare,Kenneth Branagh,United Kingdom,11000000.0,22549338.0,Renaissance Films,111.0
+Much Ado About Nothing,PG-13,Comedy,2012,"June 14, 2013 (United Kingdom)",7.1,16000.0,Joss Whedon,William Shakespeare,Alexis Denisof,United States,,5341221.0,Bellwether Pictures,109.0
+My Bloody Valentine,R,Horror,1981,"February 11, 1981 (United States)",6.3,19000.0,George Mihalka,Stephen A. Miller,Paul Kelman,Canada,,5672031.0,Canadian Film Development Corporation (CFDC),90.0
+My Bloody Valentine,R,Horror,2009,"January 16, 2009 (United States)",5.4,55000.0,Patrick Lussier,Todd Farmer,Jensen Ackles,United States,15000000.0,100734718.0,Lionsgate,101.0
+My Little Pony: The Movie,PG,Animation,2017,"October 6, 2017 (United States)",6.1,6200.0,Jayson Thiessen,Meghan McCarthy,Emily Blunt,United States,6500000.0,60330833.0,Lionsgate,99.0
+My Little Pony: The Movie,G,Animation,1986,"June 6, 1986 (United States)",6.0,2500.0,Directors,George Arthur Bloom,Danny DeVito,United States,,5958456.0,Sunbow Productions,86.0
+Neighbors,R,Comedy,2014,"May 9, 2014 (United States)",6.3,294000.0,Nicholas Stoller,Andrew Jay Cohen,Seth Rogen,United States,18000000.0,270665134.0,Good Universe,97.0
+Neighbors,R,Comedy,1981,"December 18, 1981 (United States)",5.6,7600.0,John G. Avildsen,Thomas Berger,John Belushi,United States,8500000.0,29916207.0,Columbia Pictures,94.0
+Night School,R,Horror,1981,"September 11, 1981 (United States)",5.6,2400.0,Ken Hughes,Ruth Avergon,Leonard Mann,United States,,1169875.0,Lorimar Productions,88.0
+Night School,PG-13,Comedy,2018,"September 28, 2018 (United States)",5.6,38000.0,Malcolm D. Lee,Kevin Hart,Kevin Hart,United States,29000000.0,103105878.0,Hartbeat Productions,111.0
+No Escape,R,Action,1994,"April 29, 1994 (United States)",6.1,19000.0,Martin Campbell,Richard Herley,Ray Liotta,United States,20000000.0,15339030.0,Columbia Pictures,118.0
+No Escape,R,Action,2015,"August 26, 2015 (United States)",6.8,81000.0,John Erick Dowdle,John Erick Dowdle,Lake Bell,United States,16200000.0,54418872.0,Bold Films,103.0
+No Good Deed,PG-13,Thriller,2014,"September 12, 2014 (United States)",5.6,20000.0,Sam Miller,Aimee Lagos,Taraji P. Henson,United States,13200000.0,54323210.0,Screen Gems,84.0
+No Good Deed,R,Crime,2002,"November 20, 2014 (Germany)",5.4,7100.0,Bob Rafelson,Dashiell Hammett,Samuel L. Jackson,Germany,12000000.0,1440653.0,ApolloMedia Distribution,97.0
+No Man's Land,R,Comedy,2001,"September 19, 2001 (France)",7.9,45000.0,Danis Tanovic,Danis Tanovic,Branko Djuric,France,,4858869.0,Noé Productions,98.0
+No Man's Land,R,Crime,1987,"October 23, 1987 (United States)",6.1,4400.0,Peter Werner,Dick Wolf,Charlie Sheen,United States,8000000.0,2877571.0,Orion Pictures,106.0
+Nobody's Fool,R,Comedy,1994,"January 13, 1995 (United States)",7.4,19000.0,Robert Benton,Richard Russo,Paul Newman,United States,20000000.0,39491975.0,Capella International,110.0
+Nobody's Fool,PG-13,Comedy,1986,"November 7, 1986 (United States)",5.5,754.0,Evelyn Purcell,Beth Henley,Rosanna Arquette,United States,,563358.0,Island Pictures,107.0
+Nobody's Fool,R,Comedy,2018,"November 2, 2018 (United States)",4.9,7000.0,Tyler Perry,Tyler Perry,Tiffany Haddish,United States,19000000.0,33705333.0,BET Films,110.0
+Oldboy,R,Action,2013,"November 27, 2013 (United States)",5.7,71000.0,Spike Lee,Garon Tsuchiya,Josh Brolin,United States,30000000.0,5186767.0,Good Universe,104.0
+Oldboy,R,Action,2003,"November 21, 2003 (South Korea)",8.4,532000.0,Park Chan-Wook,Garon Tsuchiya,Choi Min-sik,South Korea,3000000.0,15189934.0,Show East,120.0
+Out Cold,PG-13,Comedy,2001,"November 21, 2001 (United States)",6.3,17000.0,Brendan Malloy,Jon Zack,Flex Alexander,United States,24000000.0,14782676.0,Touchstone Pictures,89.0
+Out Cold,R,Comedy,1989,"March 3, 1989 (United States)",5.5,703.0,Malcolm Mowbray,Leonard Glasser,John Lithgow,United States,,294266.0,Braunstein and Hamady Productions,92.0
+Overboard,PG-13,Comedy,2018,"May 4, 2018 (United States)",6.0,36000.0,Rob Greenberg,Bob Fisher,Eugenio Derbez,United States,12000000.0,91244913.0,Metro-Goldwyn-Mayer (MGM),112.0
+Overboard,PG,Comedy,1987,"December 16, 1987 (United States)",6.9,55000.0,Garry Marshall,Leslie Dixon,Goldie Hawn,United States,22000000.0,26713187.0,Metro-Goldwyn-Mayer (MGM),112.0
+Paradise,R,Adventure,1982,"May 7, 1982 (United States)",4.9,2500.0,Stuart Gillard,Stuart Gillard,Willie Aames,Canada,,5588800.0,Embassy Pictures,100.0
+Paradise,PG-13,Drama,1991,"October 4, 1991 (United States)",6.7,2700.0,Mary Agnes Donoghue,Mary Agnes Donoghue,Melanie Griffith,United States,,18634643.0,Grand Highway Productions,111.0
+Parasite,R,Horror,1982,"March 12, 1982 (United States)",3.9,2300.0,Charles Band,Alan J. Adler,Robert Glaudini,United States,800000.0,2270.0,Embassy Pictures,85.0
+Parasite,R,Comedy,2019,"November 8, 2019 (United States)",8.6,631000.0,Bong Joon Ho,Bong Joon Ho,Kang-ho Song,South Korea,11400000.0,258908054.0,Barunson E&A,132.0
+Passengers,PG-13,Romance,2008,"September 26, 2008 (Spain)",5.9,35000.0,Rodrigo García,Ronnie Christensen,Anne Hathaway,United States,25000000.0,5798974.0,TriStar Pictures,93.0
+Passengers,PG-13,Drama,2016,"December 21, 2016 (United States)",7.0,364000.0,Morten Tyldum,Jon Spaihts,Jennifer Lawrence,United States,110000000.0,303144152.0,Columbia Pictures,116.0
+Pet Sematary,R,Fantasy,1989,"April 21, 1989 (United States)",6.6,97000.0,Mary Lambert,Stephen King,Dale Midkiff,United States,11500000.0,57470138.0,Paramount Pictures,103.0
+Pet Sematary,R,Horror,2019,"April 5, 2019 (United States)",5.7,86000.0,Kevin Kölsch,Stephen King,Jason Clarke,United States,21000000.0,113118226.0,Paramount Pictures,101.0
+Playing for Keeps,PG-13,Comedy,1986,"October 3, 1986 (United States)",4.2,616.0,Bob Weinstein,Bob Weinstein,Daniel Jordano,United States,,2669366.0,Miramax,102.0
+Playing for Keeps,PG-13,Comedy,2012,"December 7, 2012 (United States)",5.7,29000.0,Gabriele Muccino,Robbie Fox,Gerard Butler,United States,35000000.0,30962335.0,Eclectic Pictures,105.0
+Point Break,R,Action,1991,"July 12, 1991 (United States)",7.3,166000.0,Kathryn Bigelow,Rick King,Patrick Swayze,United States,24000000.0,83531958.0,Largo Entertainment,122.0
+Point Break,PG-13,Action,2015,"December 25, 2015 (United States)",5.3,60000.0,Ericson Core,Kurt Wimmer,Edgar Ramírez,China,105000000.0,133718711.0,Alcon Entertainment,114.0
+Poltergeist,PG-13,Horror,2015,"May 22, 2015 (United States)",4.9,56000.0,Gil Kenan,David Lindsay-Abaire,Sam Rockwell,United States,35000000.0,95437994.0,Fox 2000 Pictures,93.0
+Poltergeist,PG,Horror,1982,"June 4, 1982 (United States)",7.3,148000.0,Tobe Hooper,Steven Spielberg,JoBeth Williams,United States,10700000.0,77142388.0,Metro-Goldwyn-Mayer (MGM),114.0
+Possession,PG-13,Drama,2002,"August 30, 2002 (United States)",6.3,13000.0,Neil LaBute,A.S. Byatt,Gwyneth Paltrow,United Kingdom,25000000.0,14815898.0,Focus Features,102.0
+Possession,R,Drama,1981,"October 28, 1983 (United States)",7.4,27000.0,Andrzej Zulawski,Andrzej Zulawski,Isabelle Adjani,France,,1113538.0,Gaumont,124.0
+Priest,PG-13,Action,2011,"May 13, 2011 (United States)",5.7,117000.0,Scott Stewart,Cory Goodman,Paul Bettany,United States,60000000.0,78309505.0,Screen Gems,87.0
+Priest,R,Drama,1994,"March 24, 1995 (United States)",7.1,9800.0,Antonia Bird,Jimmy McGovern,Linus Roache,United Kingdom,,4165845.0,BBC Films,98.0
+Project X,PG,Comedy,1987,"April 17, 1987 (United States)",6.1,10000.0,Jonathan Kaplan,Lawrence Lasker,Matthew Broderick,United States,18000000.0,21589395.0,Amercent Films,108.0
+Project X,R,Comedy,2012,"March 2, 2012 (United States)",6.6,193000.0,Nima Nourizadeh,Matt Drake,Thomas Mann,United States,12000000.0,102731865.0,Green Hat Films,88.0
+Prom Night,PG-13,Horror,2008,"April 11, 2008 (United States)",3.9,35000.0,Nelson McCormick,J.S. Cardone,Brittany Snow,United States,20000000.0,57197876.0,Screen Gems,88.0
+Prom Night,R,Horror,1980,"July 18, 1980 (United States)",5.4,16000.0,Paul Lynch,William Gray,Leslie Nielsen,Canada,,14796236.0,Guardian Trust Company,92.0
+Promised Land,R,Drama,1987,"January 22, 1988 (United States)",5.7,1200.0,Michael Hoffman,Michael Hoffman,Jason Gedrick,United States,,316199.0,Great American Films Limited Partnership,102.0
+Promised Land,R,Drama,2012,"January 4, 2013 (United States)",6.6,37000.0,Gus Van Sant,John Krasinski,Matt Damon,United States,15000000.0,11039031.0,Focus Features,106.0
+Proof,R,Drama,1991,"March 20, 1992 (United States)",7.2,6300.0,Jocelyn Moorhouse,Jocelyn Moorhouse,Hugo Weaving,Australia,,524668.0,House & Moorhouse Films,86.0
+Proof,PG-13,Drama,2005,"October 7, 2005 (United States)",6.7,44000.0,John Madden,David Auburn,Gwyneth Paltrow,United States,20000000.0,14189860.0,Miramax,100.0
+Pulse,PG-13,Horror,2006,"August 11, 2006 (United States)",4.8,28000.0,Jim Sonzero,Kiyoshi Kurosawa,Kristen Bell,United States,20500000.0,29907685.0,Dimension Films,90.0
+Pulse,PG-13,Horror,1988,"March 4, 1988 (United States)",5.4,2300.0,Paul Golding,Paul Golding,Cliff De Young,United States,6000000.0,40397.0,Aspen Film Society,91.0
+Pulse,R,Horror,2001,"November 9, 2005 (United States)",6.6,18000.0,Kiyoshi Kurosawa,Kiyoshi Kurosawa,Haruhiko Katô,Japan,,318451.0,Daiei Eiga,119.0
+Quartet,R,Drama,1981,"October 25, 1981 (United States)",6.3,1300.0,James Ivory,Jean Rhys,Isabelle Adjani,United Kingdom,,12042.0,Merchant Ivory Productions,101.0
+Quartet,PG-13,Comedy,2012,"March 1, 2013 (United States)",6.8,19000.0,Dustin Hoffman,Ronald Harwood,Maggie Smith,United Kingdom,11000000.0,59520298.0,Headline Pictures,98.0
+Rampage,PG-13,Action,2018,"April 13, 2018 (United States)",6.1,151000.0,Brad Peyton,Ryan Engle,Dwayne Johnson,United States,120000000.0,428028233.0,New Line Cinema,107.0
+Rampage,R,Drama,1987,"October 30, 1992 (United States)",6.2,2000.0,William Friedkin,William P. Wood,Michael Biehn,United States,7500000.0,796368.0,De Laurentiis Entertainment Group (DEG),97.0
+Red Dawn,PG-13,Action,2012,"November 21, 2012 (United States)",5.4,74000.0,Dan Bradley,Carl Ellsworth,Chris Hemsworth,United States,65000000.0,50950296.0,FilmDistrict,93.0
+Red Dawn,PG-13,Action,1984,"August 10, 1984 (United States)",6.4,53000.0,John Milius,Kevin Reynolds,Patrick Swayze,United States,17000000.0,38376497.0,United Artists,114.0
+Revenge,R,Action,2017,"May 11, 2018 (United States)",6.4,39000.0,Coralie Fargeat,Coralie Fargeat,Matilda Anna Ingrid Lutz,France,,913331.0,M.E.S. Productions,108.0
+Revenge,R,Action,1990,"February 16, 1990 (United States)",6.2,17000.0,Tony Scott,Jim Harrison,Kevin Costner,United States,22000000.0,15645616.0,New World Pictures,124.0
+Robin Hood,PG-13,Action,2018,"November 21, 2018 (United States)",5.3,68000.0,Otto Bathurst,Ben Chandler,Taron Egerton,United States,100000000.0,86493046.0,Summit Entertainment,116.0
+Robin Hood,PG-13,Action,2010,"May 14, 2010 (United States)",6.6,257000.0,Ridley Scott,Brian Helgeland,Russell Crowe,United States,200000000.0,321669741.0,Universal Pictures,140.0
+RoboCop,R,Action,1987,"July 17, 1987 (United States)",7.5,240000.0,Paul Verhoeven,Edward Neumeier,Peter Weller,United States,13000000.0,53424681.0,Orion Pictures,102.0
+RoboCop,PG-13,Action,2014,"February 12, 2014 (United States)",6.1,219000.0,José Padilha,Joshua Zetumer,Joel Kinnaman,United States,100000000.0,242688965.0,Metro-Goldwyn-Mayer (MGM),117.0
+Running Scared,R,Action,2006,"February 24, 2006 (United States)",7.3,98000.0,Wayne Kramer,Wayne Kramer,Paul Walker,Germany,15000000.0,9380029.0,New Line Cinema,122.0
+Running Scared,R,Action,1986,"June 27, 1986 (United States)",6.5,12000.0,Peter Hyams,Gary DeVore,Gregory Hines,United States,,38500726.0,Metro-Goldwyn-Mayer (MGM),107.0
+Rush,R,Action,1991,"January 17, 1992 (United States)",6.8,8200.0,Lili Fini Zanuck,Kim Wozencraft,Jason Patric,United States,17000000.0,7241350.0,Metro-Goldwyn-Mayer (MGM),120.0
+Rush,R,Action,2013,"September 27, 2013 (United States)",8.1,446000.0,Ron Howard,Peter Morgan,Daniel Brühl,United Kingdom,38000000.0,96983009.0,Exclusive Media Group,123.0
+Safe,R,Action,2012,"April 27, 2012 (United States)",6.5,106000.0,Boaz Yakin,Boaz Yakin,Jason Statham,United States,30000000.0,41564670.0,IM Global,94.0
+Safe,R,Drama,1995,"June 30, 1995 (United States)",7.2,14000.0,Todd Haynes,Todd Haynes,Julianne Moore,United Kingdom,1000000.0,512245.0,American Playhouse Theatrical Films,119.0
+Sahara,PG,Adventure,1983,"March 2, 1984 (United States)",5.0,1500.0,Andrew V. McLaglen,Menahem Golan,Brooke Shields,United Kingdom,25000000.0,1402962.0,Cabal Film,111.0
+Sahara,PG-13,Action,2005,"April 8, 2005 (United States)",6.0,94000.0,Breck Eisner,Clive Cussler,Matthew McConaughey,United Kingdom,130000000.0,119240351.0,Paramount Pictures,124.0
+Scream,R,Horror,1981,"January 1, 1981 (United States)",2.9,674.0,Byron Quisenberry,Byron Quisenberry,Pepper Martin,United States,,,Calendar International Pictures,82.0
+Scream,R,Horror,1996,"December 20, 1996 (United States)",7.3,295000.0,Wes Craven,Kevin Williamson,Neve Campbell,United States,14000000.0,173046663.0,Dimension Films,111.0
+Serenity,R,Drama,2019,"January 25, 2019 (United States)",5.4,38000.0,Steven Knight,Steven Knight,Matthew McConaughey,United Kingdom,25000000.0,14454622.0,Blue Budgie Films Limited,106.0
+Serenity,PG-13,Action,2005,"September 30, 2005 (United States)",7.8,287000.0,Joss Whedon,Joss Whedon,Nathan Fillion,United States,39000000.0,40445129.0,Universal Pictures,119.0
+Shaft,R,Action,2000,"June 16, 2000 (United States)",6.0,75000.0,John Singleton,Ernest Tidyman,Samuel L. Jackson,Germany,46000000.0,107626125.0,Paramount Pictures,99.0
+Shaft,R,Action,2019,"June 14, 2019 (United States)",6.4,48000.0,Tim Story,Ernest Tidyman,Samuel L. Jackson,United States,35000000.0,21360215.0,Davis Entertainment,111.0
+Sing,PG-13,Drama,1989,"March 31, 1989 (United States)",6.9,716.0,Richard Baskin,Dean Pitchford,Lorraine Bracco,United States,11500000.0,2260616.0,TriStar Pictures,98.0
+Sing,PG,Animation,2016,"December 21, 2016 (United States)",7.1,140000.0,Garth Jennings,Garth Jennings,Matthew McConaughey,United States,75000000.0,634208384.0,Dentsu,108.0
+Step Up,PG-13,Drama,2010,"August 6, 2010 (United States)",6.2,56000.0,Jon M. Chu,Amy Andelson,Sharni Vinson,United States,30000000.0,159291809.0,Summit Entertainment,107.0
+Step Up,PG-13,Crime,2006,"August 11, 2006 (United States)",6.5,113000.0,Anne Fletcher,Duane Adler,Channing Tatum,United States,12000000.0,114197742.0,Touchstone Pictures,104.0
+Sudden Death,R,Action,1995,"December 22, 1995 (United States)",5.8,33000.0,Peter Hyams,Karen Elise Baldwin,Jean-Claude Van Damme,United States,35000000.0,64350171.0,Universal Pictures,111.0
+Sudden Death,R,Action,1985,"September 13, 1985 (United States)",4.8,134.0,Sig Shore,Sig Shore,Denise Coward,United States,,,Lodestar Productions,90.0
+Sunshine,R,Drama,1999,"July 14, 2000 (United States)",7.5,13000.0,István Szabó,István Szabó,Ralph Fiennes,Germany,,7918035.0,Alliance Atlantis Communications,181.0
+Sunshine,R,Sci-Fi,2007,"July 27, 2007 (United States)",7.2,238000.0,Danny Boyle,Alex Garland,Cillian Murphy,United Kingdom,,34806812.0,DNA Films,107.0
+Taxi,PG-13,Action,2004,"October 6, 2004 (United States)",4.5,41000.0,Tim Story,Luc Besson,Queen Latifah,United States,25000000.0,71255003.0,Twentieth Century Fox,97.0
+Taxi,Not Rated,Action,1998,"November 20, 1998 (United States)",7.0,78000.0,Gérard Pirès,Luc Besson,Samy Naceri,France,,,ARP Sélection,86.0
+Teenage Mutant Ninja Turtles,PG,Action,1990,"March 30, 1990 (United States)",6.8,88000.0,Steve Barron,Kevin Eastman,Judith Hoag,United States,13500000.0,201965915.0,888 Productions,93.0
+Teenage Mutant Ninja Turtles,PG-13,Action,2014,"August 8, 2014 (United States)",5.8,203000.0,Jonathan Liebesman,Josh Appelbaum,Megan Fox,United States,125000000.0,485004754.0,Paramount Pictures,101.0
+The Addams Family,PG,Animation,2019,"October 11, 2019 (United States)",5.8,31000.0,Greg Tiernan,Matt Lieberman,Oscar Isaac,Canada,24000000.0,203783566.0,Metro-Goldwyn-Mayer (MGM),86.0
+The Addams Family,PG-13,Comedy,1991,"November 22, 1991 (United States)",6.9,140000.0,Barry Sonnenfeld,Charles Addams,Anjelica Huston,United States,30000000.0,191502426.0,Orion Pictures,99.0
+The Adventures of Pinocchio,G,Adventure,1996,"July 26, 1996 (United States)",5.2,5500.0,Steve Barron,Sherry Mills,Martin Landau,Czech Republic,25000000.0,15094530.0,New Line Cinema,96.0
+The Adventures of Pinocchio,Not Rated,Animation,1984,"June 8, 1984 (United States)",5.1,73.0,Ippei Kuri,Donald Paonessa,Danielle Romeo,United States,,,Century Video Corporation,98.0
+The Avengers,PG-13,Action,1998,"August 14, 1998 (United States)",3.8,41000.0,Jeremiah S. Chechik,Sydney Newman,Ralph Fiennes,United States,60000000.0,23384939.0,Warner Bros.,89.0
+The Avengers,PG-13,Action,2012,"May 4, 2012 (United States)",8.0,1300000.0,Joss Whedon,Joss Whedon,Robert Downey Jr.,United States,220000000.0,1518815515.0,Marvel Studios,143.0
+The Aviator,PG,Adventure,1985,"March 15, 1985 (United States)",5.5,1200.0,George Miller,Ernest K. Gann,Christopher Reeve,United States,,1304192.0,United Artists,96.0
+The Aviator,PG-13,Biography,2004,"December 25, 2004 (United States)",7.5,342000.0,Martin Scorsese,John Logan,Leonardo DiCaprio,United States,110000000.0,213719942.0,Forward Pass,170.0
+The Bear,PG,Biography,1984,"September 28, 1984 (United States)",6.1,270.0,Richard C. Sarafian,Michael Kane,Gary Busey,United States,221000.0,2687148.0,,110.0
+The Bear,PG,Adventure,1988,"October 27, 1989 (United States)",7.7,17000.0,Jean-Jacques Annaud,James Oliver Curwood,Tchéky Karyo,France,,31753898.0,Price,96.0
+The Captain,,Drama,2017,"July 27, 2018 (United States)",7.4,15000.0,Robert Schwentke,Robert Schwentke,Max Hubacher,Germany,,1196669.0,Filmgalerie 451,118.0
+The Captain,,Action,2019,"September 30, 2019 (China)",6.2,1700.0,Andrew Lau,Yonggan Yu,Hanyu Zhang,China,,417282021.0,Bona Film Group,111.0
+The Fog,PG-13,Horror,2005,"October 14, 2005 (United States)",3.7,35000.0,Rupert Wainwright,Cooper Layne,Tom Welling,United States,18000000.0,46201432.0,Revolution Studios,100.0
+The Fog,R,Horror,1980,"February 8, 1980 (United States)",6.8,66000.0,John Carpenter,John Carpenter,Adrienne Barbeau,United States,1000000.0,21448782.0,AVCO Embassy Pictures,89.0
+The Gift,R,Drama,2000,"January 19, 2001 (United States)",6.7,65000.0,Sam Raimi,Billy Bob Thornton,Cate Blanchett,United States,10000000.0,44567606.0,Lakeshore Entertainment,111.0
+The Gift,R,Drama,2015,"August 7, 2015 (United States)",7.0,145000.0,Joel Edgerton,Joel Edgerton,Jason Bateman,United States,5000000.0,58980521.0,Blumhouse Productions,108.0
+The Girl with the Dragon Tattoo,R,Crime,2011,"December 21, 2011 (United States)",7.8,435000.0,David Fincher,Steven Zaillian,Daniel Craig,United States,90000000.0,232617430.0,Columbia Pictures,158.0
+The Girl with the Dragon Tattoo,R,Crime,2009,"April 30, 2010 (United States)",7.8,211000.0,Niels Arden Oplev,Nikolaj Arcel,Michael Nyqvist,Sweden,13000000.0,104414200.0,Yellow Bird,152.0
+The Guardian,R,Drama,1990,"April 27, 1990 (United States)",5.4,5300.0,William Friedkin,Dan Greenburg,Jenny Seagrove,United States,,17037887.0,Universal Pictures,92.0
+The Guardian,PG-13,Action,2006,"September 29, 2006 (United States)",6.9,89000.0,Andrew Davis,Ron L. Brinkerhoff,Kevin Costner,United States,70000000.0,94973540.0,Touchstone Pictures,139.0
+The Hitcher,R,Action,1986,"February 21, 1986 (United States)",7.2,45000.0,Robert Harmon,Eric Red,Rutger Hauer,United States,6000000.0,5844868.0,HBO Pictures,97.0
+The Hitcher,R,Crime,2007,"January 19, 2007 (United States)",5.6,41000.0,Dave Meyers,Eric Red,Sean Bean,United States,10000000.0,25399945.0,Focus Features,84.0
+The Host,PG-13,Action,2013,"March 29, 2013 (United States)",5.9,112000.0,Andrew Niccol,Andrew Niccol,Saoirse Ronan,United States,40000000.0,63365859.0,Chockstone Pictures,125.0
+The Host,R,Action,2006,"March 30, 2007 (United States)",7.1,112000.0,Bong Joon Ho,Bong Joon Ho,Kang-ho Song,South Korea,,89433436.0,Chungeorahm Film,120.0
+The Hunted,R,Action,1995,"February 24, 1995 (United States)",6.0,4900.0,J.F. Lawton,J.F. Lawton,Christopher Lambert,United States,20000000.0,6609661.0,Universal Pictures,110.0
+The Hunted,R,Action,2003,"March 14, 2003 (United States)",6.1,45000.0,William Friedkin,David Griffiths,Tommy Lee Jones,United States,55000000.0,46061847.0,Lakeshore Entertainment,94.0
+The Island,R,Action,1980,"June 13, 1980 (United States)",5.3,3900.0,Michael Ritchie,Peter Benchley,Michael Caine,United States,22000000.0,15716828.0,Universal Pictures,109.0
+The Island,PG-13,Action,2005,"July 22, 2005 (United States)",6.8,304000.0,Michael Bay,Caspian Tredwell-Owen,Scarlett Johansson,United States,126000000.0,162949164.0,Dreamworks Pictures,136.0
+The Jungle Book,PG,Adventure,2016,"April 15, 2016 (United States)",7.4,264000.0,Jon Favreau,Justin Marks,Neel Sethi,United Kingdom,175000000.0,966554929.0,Fairview Entertainment,106.0
+The Jungle Book,PG,Adventure,1994,"December 25, 1994 (United States)",6.0,17000.0,Stephen Sommers,Rudyard Kipling,Jason Scott Lee,United States,27000000.0,43229904.0,Vegahom Europe,111.0
+The Karate Kid,PG,Action,2010,"June 11, 2010 (United States)",6.2,168000.0,Harald Zwart,Christopher Murphey,Jackie Chan,United States,40000000.0,359126022.0,Columbia Pictures,140.0
+The Karate Kid,PG,Action,1984,"June 22, 1984 (United States)",7.3,205000.0,John G. Avildsen,Robert Mark Kamen,Ralph Macchio,United States,8000000.0,91119319.0,Columbia Pictures,126.0
+The Kid,PG,Comedy,2000,"July 7, 2000 (United States)",6.1,41000.0,Jon Turteltaub,Audrey Wells,Bruce Willis,United States,65000000.0,110317580.0,Chester Films Inc.,104.0
+The Kid,R,Biography,2019,"March 8, 2019 (United States)",5.9,7400.0,Vincent D'Onofrio,Vincent D'Onofrio,Jake Schur,United States,8000000.0,1561698.0,Mimran Schur Pictures,100.0
+The Lion King,PG,Animation,2019,"July 19, 2019 (United States)",6.9,222000.0,Jon Favreau,Jeff Nathanson,Donald Glover,United States,260000000.0,1670727580.0,Walt Disney Pictures,118.0
+The Lion King,G,Animation,1994,"June 24, 1994 (United States)",8.5,970000.0,Roger Allers,Irene Mecchi,Matthew Broderick,United States,45000000.0,1083720877.0,Walt Disney Pictures,88.0
+The Little Mermaid,PG,Adventure,2018,"August 17, 2018 (United States)",4.3,8500.0,Blake Harris,Blake Harris,William Moseley,United States,,2614006.0,Conglomerate Media,85.0
+The Little Mermaid,G,Animation,1989,"November 17, 1989 (United States)",7.6,244000.0,Ron Clements,John Musker,Jodi Benson,United States,40000000.0,211343479.0,Walt Disney Pictures,83.0
+The Man Who Wasn't There,R,Crime,2001,"November 16, 2001 (United States)",7.5,106000.0,Joel Coen,Joel Coen,Billy Bob Thornton,United States,20000000.0,18916623.0,Good Machine,116.0
+The Man Who Wasn't There,R,Action,1983,"August 12, 1983 (United States)",3.8,513.0,Bruce Malmuth,Stanford Sherman,Steve Guttenberg,United States,,2443487.0,Paramount Pictures,111.0
+The Mummy,PG-13,Action,2017,"June 9, 2017 (United States)",5.4,177000.0,Alex Kurtzman,David Koepp,Tom Cruise,United States,125000000.0,409231607.0,Universal Pictures,110.0
+The Mummy,PG-13,Action,1999,"May 7, 1999 (United States)",7.0,401000.0,Stephen Sommers,Stephen Sommers,Brendan Fraser,United States,80000000.0,415933406.0,Universal Pictures,124.0
+The Phantom of the Opera,PG-13,Drama,2004,"December 10, 2004 (United Kingdom)",7.2,118000.0,Joel Schumacher,Gaston Leroux,Gerard Butler,United Kingdom,70000000.0,154649125.0,Warner Bros.,143.0
+The Phantom of the Opera,R,Drama,1989,"November 3, 1989 (United States)",5.5,3800.0,Dwight H. Little,Gaston Leroux,Robert Englund,United States,,3953745.0,21st Century Film Corporation,93.0
+The Postman,PG,Biography,1994,"March 22, 1996 (United States)",7.7,34000.0,Michael Radford,Antonio Skármeta,Massimo Troisi,Italy,3000000.0,21898920.0,Cecchi Gori Group Tiger Cinematografica,108.0
+The Postman,R,Action,1997,"December 25, 1997 (United States)",6.1,70000.0,Kevin Costner,David Brin,Kevin Costner,United States,80000000.0,17626234.0,Tig Productions,177.0
+The Protector,R,Action,1985,"August 23, 1985 (United States)",5.7,4200.0,James Glickenhaus,James Glickenhaus,Jackie Chan,Hong Kong,5000000.0,981817.0,Eurasia Investments,91.0
+The Protector,R,Action,2005,"September 8, 2006 (United States)",7.1,36000.0,Prachya Pinkaew,Napalee,Tony Jaa,Thailand,,27165581.0,Sahamongkolfilm Co.,111.0
+The Rookie,G,Drama,2002,"March 29, 2002 (United States)",6.9,33000.0,John Lee Hancock,Mike Rich,Dennis Quaid,United States,22000000.0,80693537.0,98 MPH Productions,127.0
+The Rookie,R,Action,1990,"December 7, 1990 (United States)",5.9,26000.0,Clint Eastwood,Boaz Yakin,Clint Eastwood,United States,10000000.0,21633874.0,Warner Bros.,120.0
+The Stepfather,R,Horror,1987,"June 5, 1987 (United States)",6.8,14000.0,Joseph Ruben,Carolyn Lefcourt,Terry O'Quinn,United Kingdom,,2488740.0,Incorporated Television Company (ITC),89.0
+The Stepfather,PG-13,Crime,2009,"October 16, 2009 (United States)",5.6,33000.0,Nelson McCormick,J.S. Cardone,Penn Badgley,United States,20000000.0,31198531.0,Screen Gems,101.0
+The Thing,R,Horror,1982,"June 25, 1982 (United States)",8.1,382000.0,John Carpenter,Bill Lancaster,Kurt Russell,United States,15000000.0,19632053.0,Universal Pictures,109.0
+The Thing,R,Horror,2011,"October 14, 2011 (United States)",6.2,124000.0,Matthijs van Heijningen Jr.,Eric Heisserer,Mary Elizabeth Winstead,Canada,38000000.0,31505287.0,Morgan Creek Entertainment,103.0
+The Three Musketeers,PG,Action,1993,"November 12, 1993 (United States)",6.4,52000.0,Stephen Herek,Alexandre Dumas,Charlie Sheen,Austria,30000000.0,53898845.0,Walt Disney Pictures,105.0
+The Three Musketeers,PG-13,Action,2011,"October 21, 2011 (United States)",5.7,105000.0,Paul W.S. Anderson,Alex Litvak,Logan Lerman,United States,75000000.0,132274484.0,Summit Entertainment,110.0
+The Unborn,R,Drama,1991,"March 29, 1991 (United States)",4.6,1100.0,Rodman Flender,John Brancato,Brooke Adams,United States,,1159578.0,Califilm,83.0
+The Unborn,PG-13,Drama,2009,"January 9, 2009 (United States)",4.8,50000.0,David S. Goyer,David S. Goyer,Odette Annable,United States,16000000.0,76514050.0,Rogue Pictures,88.0
+Total Recall,PG-13,Action,2012,"August 3, 2012 (United States)",6.2,244000.0,Len Wiseman,Kurt Wimmer,Colin Farrell,United States,125000000.0,198467168.0,Total Recall,118.0
+Total Recall,R,Action,1990,"June 1, 1990 (United States)",7.5,310000.0,Paul Verhoeven,Philip K. Dick,Arnold Schwarzenegger,United States,65000000.0,261317921.0,Carolco Pictures,113.0
+Trespass,R,Action,1992,"December 25, 1992 (United States)",6.3,10000.0,Walter Hill,Bob Gale,Bill Paxton,United States,14000000.0,13249535.0,Universal Pictures,101.0
+Trespass,R,Crime,2011,"October 21, 2011 (Bulgaria)",5.3,42000.0,Joel Schumacher,Karl Gajdusek,Nicolas Cage,United States,35000000.0,10117966.0,Millennium Films,91.0
+Trust,R,Crime,2010,"April 28, 2011 (Israel)",6.9,42000.0,David Schwimmer,Andy Bellin,Clive Owen,United States,4000000.0,595802.0,Millennium Films,106.0
+Trust,R,Comedy,1990,"September 20, 1991 (United Kingdom)",7.4,9400.0,Hal Hartley,Hal Hartley,Adrienne Shelly,United Kingdom,700000.0,357400.0,Channel Four Films,107.0
+Twilight,PG-13,Drama,2008,"November 21, 2008 (United States)",5.2,435000.0,Catherine Hardwicke,Melissa Rosenberg,Kristen Stewart,United States,37000000.0,408430415.0,Summit Entertainment,122.0
+Twilight,R,Crime,1998,"March 6, 1998 (United States)",6.2,11000.0,Robert Benton,Robert Benton,Paul Newman,United States,37000000.0,15055091.0,Cinehaus,94.0
+Under Suspicion,R,Crime,2000,"November 15, 2000 (France)",6.5,23000.0,Stephen Hopkins,John Wainwright,Morgan Freeman,France,25000000.0,1308242.0,Revelations Entertainment,110.0
+Under Suspicion,R,Crime,1991,"February 28, 1992 (United States)",6.5,3800.0,Simon Moore,Simon Moore,Liam Neeson,United Kingdom,6000000.0,221295.0,Carnival Film & Television,99.0
+Unforgettable,R,Drama,1996,"February 23, 1996 (United States)",6.0,5000.0,John Dahl,Bill Geddie,Ray Liotta,United States,18000000.0,2821671.0,Dino De Laurentiis Company,117.0
+Unforgettable,R,Drama,2017,"April 21, 2017 (United States)",5.1,15000.0,Denise Di Novi,Christina Hodson,Rosario Dawson,United States,12000000.0,17768012.0,DiNovi Pictures,100.0
+Venom,PG-13,Action,2018,"October 5, 2018 (United States)",6.7,387000.0,Ruben Fleischer,Jeff Pinkner,Tom Hardy,China,100000000.0,856085151.0,Avi Arad Productions,112.0
+Venom,R,Horror,2005,"September 16, 2005 (United States)",4.6,9700.0,Jim Gillespie,Flint Dille,Agnes Bruckner,United States,,881779.0,Dimension Films,87.0
+Venom,R,Horror,1981,"January 29, 1982 (United States)",5.8,2600.0,Piers Haggard,Alan Scholefield,Klaus Kinski,United Kingdom,,5229643.0,Morison Film Group,92.0
+Where the Heart Is,PG-13,Comedy,2000,"April 28, 2000 (United States)",6.7,32000.0,Matt Williams,Lowell Ganz,Natalie Portman,United States,15000000.0,40863718.0,Twentieth Century Fox,120.0
+Where the Heart Is,R,Comedy,1990,"February 23, 1990 (United States)",6.0,1500.0,John Boorman,Telsche Boorman,Dabney Coleman,United States,15000000.0,1106475.0,Touchstone Pictures,107.0
+Wuthering Heights,Not Rated,Drama,1985,"October 9, 1985 (France)",6.5,339.0,Jacques Rivette,Pascal Bonitzer,Fabienne Babe,France,,,La Cecilia,130.0
+Wuthering Heights,Not Rated,Drama,2011,"November 11, 2011 (United Kingdom)",6.0,9700.0,Andrea Arnold,Andrea Arnold,Kaya Scodelario,United Kingdom,,1742215.0,Film4,129.0

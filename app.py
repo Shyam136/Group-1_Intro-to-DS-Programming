@@ -13,11 +13,12 @@ To be replaced later with real data, models, and visuals.
 from __future__ import annotations
 
 import streamlit as st
+import joblib
 import pandas as pd
 from typing import Any, Iterable
 
 # Import helpers from apputil.py
-from apputil import load_data, predict_gross, generate_insights
+from apputil import load_processed, train_baseline, load_data, predict_gross, generate_insights
 
 # ---------- Page setup ----------
 st.set_page_config(page_title="Which Movie Will Gross More?", layout="wide")
@@ -84,40 +85,23 @@ with col2:
 st.divider()
 
 # ---------- Predict ----------
-if st.button("Predict"):
-    if not movie_a or not movie_b:
-        st.warning("Please select two movies.")
-    elif movie_a == movie_b:
-        st.warning("Please choose two different movies.")
-    else:
-        try:
-            result: Any = predict_gross(movie_a, movie_b)  # from apputil.py
-        except Exception as e:
-            st.error(f"Prediction failed: {e}")
-            result = None
+@st.cache_resource  # cache model across reruns/users (Streamlit guidance)
+def get_model_bundle():
+    df = load_processed()
+    model, feature_cols, auc = train_baseline(df)  # quick baseline retrain
+    return df, model, feature_cols, auc
 
-        if isinstance(result, dict):
-            # Expecting a shape like: {"ok": bool, "winner": str, "reason": str, "score": {...}}
-            ok = bool(result.get("ok", False))
-            if ok:
-                winner = result.get("winner", "Unknown")
-                st.success(f"Predicted winner: **{winner}**")
-                score = result.get("score")
-                if isinstance(score, dict):
-                    with st.expander("Details"):
-                        for k, v in score.items():
-                            st.write(f"- **{k}**: {v}")
-                reason = result.get("reason")
-                if isinstance(reason, str) and reason.strip():
-                    st.caption(reason)
-            else:
-                # Provide user-facing message for missing data / validation issues
-                msg = result.get("message") or result.get("reason") or "Prediction could not be computed."
-                st.warning(msg)
-        elif result is None:
-            st.info("No prediction result was returned.")
-        else:
-            st.info(str(result))
+if st.button("Predict"):
+    df, model, feature_cols, auc = get_model_bundle()
+    res = predict_gross(movie_a, movie_b, df, model, feature_cols)
+
+    if not res["ok"]:
+        st.error("Oops — " + "; ".join(res["warnings"]))
+    else:
+        st.success(f"Predicted winner: **{res['predicted_winner']}**")
+        st.caption(f"Baseline AUC (holdout): {auc:.3f}")
+        with st.expander("Details"):
+            st.write(res)
 
 st.divider()
 

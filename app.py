@@ -13,148 +13,128 @@ To be replaced later with real data, models, and visuals.
 from __future__ import annotations
 
 import streamlit as st
+import joblib
+import pandas as pd
+from typing import Any, Iterable
 
-# Import your module stubs (Shyam's file)
-try:
-    from apputil import load_data, predict_gross, generate_insights
-except Exception:
-    # Fallback no-op stubs so the page still runs before apputil exists.
-    def load_data():
-        # TODO: replace with real loader; keep names unique and sorted
-        return {"title": [
-            "The Dark Knight", "Inception", "Interstellar", "The Matrix"
-        ]}
+# Import helpers from apputil.py
+from apputil import load_processed, train_baseline, load_data, predict_gross, generate_insights
 
-    def predict_gross(movie_a: str, movie_b: str):
-        # TODO: replace with real prediction tuple (winner, details)
-        winner = movie_a if len(movie_a) >= len(movie_b) else movie_b
-        return {
-            "winner": winner,
-            "confidence": 0.50,
-            "notes": "Placeholder model — for scaffold only."
-        }
+# ---------- Page setup ----------
+st.set_page_config(page_title="Which Movie Will Gross More?", layout="wide")
 
-    def generate_insights(_data):
-        # TODO: replace with real insight dict or DataFrame
-        return {"rows": 7600, "features": 15, "years": "1980–2020 (approx.)"}
-
-
-# --- Page setup ---
-st.set_page_config(
-    page_title="Which Movie Will Gross More?",
-    page_icon="🎬",
-    layout="wide",
-    menu_items={
-        "About": "Prototype app to compare two films and predict which "
-                 "will gross more domestically."
-    },
-)
-
-# --- Sidebar ---
 with st.sidebar:
     st.header("About")
     st.write(
-        "Compare two films using metadata and a simple predictive model. "
-        "This is a work-in-progress scaffold."
+        "Compare two films based on release-time features to predict which "
+        "is likely to have the higher **inflation-adjusted domestic gross**."
     )
-    st.caption(
-        "Dataset: Movie Industry (Daniel Grijalvas – Kaggle). "
-        "Exact cleaning/adjustments will be documented in the README."
-    )
+    st.caption("Dataset: Movie Industry (Daniel Grijalva, Kaggle).")
 
-    with st.expander("What’s coming next"):
-        st.markdown(
-            "- Data cleaning & inflation adjustments\n"
-            "- Feature engineering (genre, budget, release window, etc.)\n"
-            "- Model training & evaluation\n"
-            "- Model cards & limitation notes"
-        )
-
-# --- Title & intro ---
 st.title("Which Movie Will Gross More?")
 
+# ---------- Data loading ----------
+@st.cache_data(show_spinner=True)
+def _get_data() -> pd.DataFrame:
+    # load_data() is defined in apputil.py
+    df = load_data()
+    if not isinstance(df, pd.DataFrame) or df.empty:
+        raise RuntimeError("Loaded dataset is empty or not a DataFrame.")
+    return df
+
+error_box = st.empty()
+try:
+    df = _get_data()
+except Exception as e:
+    error_box.error(f"Failed to load data: {e}")
+    st.stop()
+
+# Figure out the title column name robustly
+def _first_present(cols: Iterable[str]) -> str | None:
+    for c in cols:
+        if c in df.columns:
+            return c
+    return None
+
+title_col = _first_present(["title", "Title", "movie_title", "Movie", "name", "Name"])
+if title_col is None:
+    error_box.error(
+        "Could not find a movie title column in the dataset. "
+        "Please add a 'title' (or similar) column."
+    )
+    st.stop()
+
+movie_list = (
+    df[title_col].dropna().astype(str).str.strip().replace("", pd.NA).dropna().unique()
+)
+movie_list = sorted(movie_list.tolist())
+
 st.write(
-    "Pick two movies below and run a placeholder prediction. "
-    "We’ll swap in the real model once the data pipeline is ready."
+    "Pick two movies to compare. If one has missing key features, "
+    "the app will tell you what needs attention."
 )
 
-# --- Dataset quick facts ---
-with st.container():
-    st.subheader("About the dataset")
-    info = generate_insights(None)
-    st.markdown(
-        f"- Approx. rows: **{info.get('rows', 'TBD')}**  \n"
-        f"- Features: **{info.get('features', 'TBD')}**  \n"
-        f"- Coverage: **{info.get('years', 'TBD')}**  \n"
-        "Fields typically include: title, genre, rating, budget, gross, "
-        "runtime, release year."
-    )
+# ---------- UI: two selectors ----------
+col1, col2 = st.columns(2)
+with col1:
+    movie_a = st.selectbox("Movie A", movie_list, index=0 if movie_list else None)
+with col2:
+    default_b = 1 if len(movie_list) > 1 else 0
+    movie_b = st.selectbox("Movie B", movie_list, index=default_b if movie_list else None)
 
 st.divider()
 
-# --- Load titles once (swap to @st.cache_data inside apputil) ---
-data = load_data()
-titles = sorted(set(data.get("title", [])))  # keep unique & sorted
-if not titles:
-    st.error("No titles available yet. Please load data in `apputil.load_data()`.")
-    st.stop()
+# ---------- Predict ----------
+@st.cache_resource  # cache model across reruns/users (Streamlit guidance)
+def get_model_bundle():
+    df = load_processed()
+    model, feature_cols, auc = train_baseline(df)  # quick baseline retrain
+    return df, model, feature_cols, auc
 
-# --- Input form ---
-st.subheader("Select two movies to compare")
-with st.form("compare_form", clear_on_submit=False):
-    col1, col2 = st.columns(2)
+if st.button("Predict"):
+    df, model, feature_cols, auc = get_model_bundle()
+    res = predict_gross(movie_a, movie_b, df, model, feature_cols)
 
-    with col1:
-        movie_a = st.selectbox("Movie A", titles, index=0, key="movie_a")
-    with col2:
-        movie_b = st.selectbox("Movie B", titles, index=1, key="movie_b")
-
-    invalid = (movie_a == movie_b)
-    if invalid:
-        st.warning("Please choose two *different* movies.")
-
-    submitted = st.form_submit_button(
-        "Predict",
-        disabled=invalid,
-        use_container_width=True
-    )
-
-# --- Results area ---
-result_col, meta_col = st.columns([2, 1], gap="large")
-
-if submitted:
-    result = predict_gross(movie_a, movie_b)
-    error = result.get("error")
-    
-    if error:
-        with result_col:
-            st.error(f"{error}")
-            if result.get("errorMessage"):
-                st.info(result["errorMessage"])
+    if not res["ok"]:
+        st.error("Oops — " + "; ".join(res["warnings"]))
     else:
-        winner = result.get("winner")
-        confidence = result.get("confidence", None)
-        error_message = result.get("errorMessage", "")
+        st.success(f"Predicted winner: **{res['predicted_winner']}**")
+        st.caption(f"Baseline AUC (holdout): {auc:.3f}")
+        with st.expander("Details"):
+            st.write(res)
 
-        with result_col:
-            if winner:
-                st.success(f"**Predicted winner:** {winner}")
-                if confidence > 0:
-                    st.caption(f"Confidence: {confidence:.0%}")
-                if error_message:
-                    st.warning(error_message)
+st.divider()
+
+# ---------- Insights ----------
+st.subheader("Insights")
+st.caption("Quick diagnostics and exploratory summaries based on the current dataset.")
+
+try:
+    insights = generate_insights(df)  # from apputil.py
+    if insights is None:
+        st.write("No insights available yet.")
+    elif isinstance(insights, (list, tuple)):
+        for i, item in enumerate(insights, start=1):
+            # Support Plotly figs, Altair charts, Matplotlib figs, or plain strings
+            if hasattr(item, "to_dict") and hasattr(item, "to_json"):
+                st.plotly_chart(item, use_container_width=True)
+            elif hasattr(item, "mark_point") or getattr(item, "_class_name", "") == "Chart":
+                st.altair_chart(item, use_container_width=True)  # if you ever use Altair
+            elif str(type(item)).startswith("<class 'matplotlib"):
+                st.pyplot(item)
+            elif isinstance(item, str):
+                st.write(item)
             else:
-                st.warning("Could not determine a winner.")
-                if error_message:
-                    st.info(error_message)
+                st.write(item)
+    else:
+        # Single object fallback
+        if hasattr(insights, "to_dict") and hasattr(insights, "to_json"):
+            st.plotly_chart(insights, use_container_width=True)
+        else:
+            st.write(insights)
+except Exception as e:
+    st.info(f"(Insights pending) {e}")
 
-        with meta_col:
-            if winner:
-                st.markdown("**Why this result?**")
-                st.write(
-                    "Feature contributions and charts will appear here once the "
-                    "real model is integrated (e.g., budget, release year, genre)."
-                )
-else:
-    with result_col:
-        st.info("Choose two movies and click **Predict** to see the result.")
+# ---------- Footer ----------
+st.divider()
+st.caption("Built with Streamlit • Group 1 • Intro to DS Programming")

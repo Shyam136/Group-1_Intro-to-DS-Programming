@@ -123,27 +123,38 @@ with st.form("compare_form", clear_on_submit=False):
 result_col, meta_col = st.columns([2, 1], gap="large")
 
 if submitted:
-    try:
-        result = predict_gross(movie_a, movie_b)
+    result = predict_gross(movie_a, movie_b)
+    error = result.get("error")
+    
+    if error:
+        with result_col:
+            st.error(f"{error}")
+            if result.get("errorMessage"):
+                st.info(result["errorMessage"])
+    else:
         winner = result.get("winner")
         confidence = result.get("confidence", None)
-        notes = result.get("notes", "")
+        error_message = result.get("errorMessage", "")
 
         with result_col:
-            st.success(f"**Predicted winner:** {winner}")
-            if confidence is not None:
-                st.caption(f"Model confidence (placeholder): {confidence:.0%}")
-            if notes:
-                st.caption(notes)
+            if winner:
+                st.success(f"**Predicted winner:** {winner}")
+                if confidence > 0:
+                    st.caption(f"Confidence: {confidence:.0%}")
+                if error_message:
+                    st.warning(error_message)
+            else:
+                st.warning("Could not determine a winner.")
+                if error_message:
+                    st.info(error_message)
 
         with meta_col:
-            st.markdown("**Why this result?**")
-            st.write(
-                "Feature contributions and charts will appear here once the "
-                "real model is integrated (e.g., budget, release year, genre)."
-            )
-    except Exception as e:
-        st.error(f"Prediction failed: {e}")
+            if winner:
+                st.markdown("**Why this result?**")
+                st.write(
+                    "Feature contributions and charts will appear here once the "
+                    "real model is integrated (e.g., budget, release year, genre)."
+                )
 else:
     with result_col:
         st.info("Choose two movies and click **Predict** to see the result.")

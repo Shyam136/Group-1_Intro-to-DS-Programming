@@ -147,81 +147,132 @@ def predict_gross(
           "winner": <title>,
           "confidence": <float in 0..1 (placeholder)>,
           "scores": {title: score, ...},
-          "notes": <brief explanation string>
+          "errorMessage": <brief explanation string>,
+          "error": <error message if any, else None>
         }
     """
-    if data is None:
-        data = load_data()
+    try:
+        if data is None:
+            data = load_data()
 
-    df = data.df.copy()
+        df = data.df.copy()
 
-    # Filter to the two candidates
-    subset = df[df["title"].isin([movie_a, movie_b])].copy()
-    if subset.empty or subset["title"].nunique() < 2:
-        raise ValueError("Both selected titles must exist and be distinct.")
+        # Check if both movies exist in the dataset
+        if movie_a not in data.titles or movie_b not in data.titles:
+            missing = [m for m in [movie_a, movie_b] if m not in data.titles]
+            return {
+                "winner": None,
+                "confidence": 0.0,
+                "scores": {},
+                "errorMessage": f"Movie(s) not found in dataset: {', '.join(missing)}",
+                "error": "Movie not found"
+            }
+            
+        existing_movies = set(df["title"])
+        missing_movies = []
+        
+        if movie_a not in existing_movies:
+            missing_movies.append(movie_a)
+        if movie_b not in existing_movies:
+            missing_movies.append(movie_b)
+        if missing_movies:
+            return {
+                "winner": None,
+                "confidence": 0.0,
+                "scores": {},
+                "errorMessage": f"No data available for movie(s): {', '.join(missing_movies)}",
+                "error": None
+            }
 
-    # Choose the best available signal
-    signal_col = None
-    for candidate in ("domestic_gross", "domestic", "gross"):
-        if candidate in subset.columns:
-            signal_col = candidate
-            break
+        # Filter to the two candidates
+        subset = df[df["title"].isin([movie_a, movie_b])].copy()
+        if subset.empty or subset["title"].nunique() < 2:
+            return {
+                "winner": None,
+                "confidence": 0.0,
+                "scores": {},
+                "errorMessage": "Not enough data to make a prediction.",
+                "error": None
+            }
 
-    scores: Dict[str, float] = {}
+        # Choose the best available signal
+        signal_col = None
+        for candidate in ("domestic_gross", "domestic", "gross"):
+            if candidate in subset.columns:
+                signal_col = candidate
+                break
 
-    if signal_col is not None:
-        # Use the numeric signal directly
-        agg = (
-            subset.groupby("title")[signal_col]
-            .mean()  # if duplicates exist, average them
-            .to_dict()
-        )
-        scores = {movie_a: float(agg.get(movie_a, np.nan)),
-                  movie_b: float(agg.get(movie_b, np.nan))}
-        notes = f"Used column '{signal_col}' as the prediction signal."
-    else:
-        # Heuristic fallback:
-        # Prefer budget if available, else a stable title-based score.
-        def fallback_score(row) -> float:
-            if "budget" in row and pd.notnull(row["budget"]):
-                return float(row["budget"])
-            # Stable, deterministic pseudo-score from the title
-            return float(abs(hash(row["title"])) % 10_000)
+        scores: Dict[str, float] = {}
 
-        subset["score"] = subset.apply(fallback_score, axis=1)
-        agg = subset.groupby("title")["score"].mean().to_dict()
-        scores = {movie_a: float(agg.get(movie_a, 0.0)),
-                  movie_b: float(agg.get(movie_b, 0.0))}
-        notes = (
-            "No explicit gross columns found. "
-            "Used budget if present, otherwise a deterministic title-based score."
-        )
+        if signal_col is not None:
+            # Use the numeric signal directly
+            agg = (
+                subset.groupby("title")[signal_col]
+                .mean()  # if duplicates exist, average them
+                .to_dict()
+            )
+            scores = {movie_a: float(agg.get(movie_a, np.nan)),
+                    movie_b: float(agg.get(movie_b, np.nan))}
+            notes = f"Used column '{signal_col}' as the prediction signal."
+        else:
+            # Heuristic fallback:
+            # Prefer budget if available, else a stable title-based score.
+            def fallback_score(row) -> float:
+                if "budget" in row and pd.notnull(row["budget"]):
+                    return float(row["budget"])
+                # Stable, deterministic pseudo-score from the title
+                return float(abs(hash(row["title"])) % 10_000)
+
+            subset["score"] = subset.apply(fallback_score, axis=1)
+            agg = subset.groupby("title")["score"].mean().to_dict()
+            scores = {movie_a: float(agg.get(movie_a, 0.0)),
+                    movie_b: float(agg.get(movie_b, 0.0))}
+            notes = (
+                "No explicit gross columns found. "
+                "Used budget if present, otherwise a deterministic title-based score."
+            )
 
     # Pick the winner and a placeholder “confidence”
-    a_score, b_score = scores[movie_a], scores[movie_b]
-    if np.isnan(a_score) and np.isnan(b_score):
-        raise ValueError("Insufficient numeric data to compare the two titles.")
+        a_score, b_score = scores[movie_a], scores[movie_b]
+        if np.isnan(a_score) and np.isnan(b_score):
+            return {
+                "winner": None,
+                "confidence": 0.0,
+                "scores": scores,
+                "errorMessage": "Insufficient numeric data to compare the two titles.",
+                "error": "Insufficient numeric data to compare the two titles."
+            }
 
-    if (not np.isnan(a_score)) and (np.isnan(b_score)):
-        winner, confidence = movie_a, 0.75
-    elif (not np.isnan(b_score)) and (np.isnan(a_score)):
-        winner, confidence = movie_b, 0.75
-    else:
-        if a_score == b_score:
-            winner, confidence = (movie_a, 0.5)  # deterministic tie-breaker
+        if (not np.isnan(a_score)) and (np.isnan(b_score)):
+            winner, confidence = movie_a, 0.75
+        elif (not np.isnan(b_score)) and (np.isnan(a_score)):
+            winner, confidence = movie_b, 0.75
         else:
-            winner = movie_a if a_score > b_score else movie_b
-            # naive confidence: sigmoid-like based on relative gap
-            denom = max(a_score, b_score)
-            gap = abs(a_score - b_score) / (denom if denom else 1.0)
-            confidence = float(min(0.95, max(0.55, 0.55 + gap / 2)))
+            if a_score == b_score:
+                winner, confidence = (movie_a, 0.5)  # deterministic tie-breaker
+            else:
+                winner = movie_a if a_score > b_score else movie_b
+                # naive confidence: sigmoid-like based on relative gap
+                denom = max(a_score, b_score)
+                gap = abs(a_score - b_score) / (denom if denom else 1.0)
+                confidence = float(min(0.95, max(0.55, 0.55 + gap / 2)))
 
-    return {
-        "winner": winner,
-        "confidence": confidence,
-        "scores": scores,
-        "notes": notes,
-    }
+        return {
+            "winner": winner,
+            "confidence": confidence,
+            "scores": scores,
+            "errorMessage": None,
+            "error": None
+        }
+
+    except Exception as e:
+        return {
+            "winner": None,
+            "confidence": 0.0,
+            "scores": {},
+            "errorMessage": str(e),
+            "error": "Prediction failed"
+        }
 
 
 def generate_insights(data: Optional[AppData] = None) -> Dict[str, object]:
@@ -266,6 +317,49 @@ def generate_insights(data: Optional[AppData] = None) -> Dict[str, object]:
     }
 
 
+# ---------------------------------------------------------------------
+def compare_movies(movie_a: str, movie_b: str, data: Optional[AppData] = None) -> Dict[str, any]:
+    """
+    Simple movie comparison based on gross revenue.
+    Returns the movie with higher gross revenue.
+    """
+    try:
+        if data is None:
+            data = load_data()
+            
+        df = data.df
+
+        # Helper function to get gross revenue
+        def get_gross(title):
+            # Get the first matching movie
+            movie = df[df["title"] == title]
+            if len(movie) == 0:
+                return None
+                
+            row = movie.iloc[0]
+            
+            # Try to get any available gross value
+            for col in ['gross']:
+                if col in row and pd.notna(row[col]) and row[col] > 0:
+                    return float(row[col])
+            return None
+        
+        # Get gross for both movies
+        gross_a = get_gross(movie_a)
+        gross_b = get_gross(movie_b)
+        
+        # Simple comparison
+        if gross_a is None or gross_b is None:
+            return {"winner": None, "error": "Missing data for one or both movies"}
+            
+        return {
+            "winner": movie_a if gross_a > gross_b else movie_b if gross_b > gross_a else None,
+            "gross_a": gross_a,
+            "gross_b": gross_b
+        }
+        
+    except Exception as e:
+        return {"winner": None, "error": str(e)}
 # ---------------------------------------------------------------------
 # (Optional) Quick local checks (won't run in Streamlit)
 # ---------------------------------------------------------------------

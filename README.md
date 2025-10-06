@@ -59,11 +59,12 @@ To keep the repo clean and consistent:
 ## Posting the Visualizations to the READ.ME
 ### Budget vs. Gross by Rating
 
-Below is an interactive visualization showing the relationship between movie budgets and inflation-adjusted gross revenue, grouped by rating. Explore trends by hovering over points and filtering by rating.
+Below is a static visualization showing the relationship between movie budgets and inflation-adjusted gross revenue, grouped by rating.
 
-<iframe src="budget_gross_rating.html" width="100%" height="600" frameborder="0"></iframe>
+![Budget vs. Gross by Rating](budget_gross_rating.png)
 
 ### Top Genres by Decades
-Below is an interactive visualization displaying the top movie genres for each decade from 1980 to 2020. Use the controls to explore how genre popularity has shifted over time.
 
-<iframe src="top_genres_by_decade.html" width="100%" height="600" frameborder="0"></iframe>
+Below is a static visualization displaying the top movie genres for each decade from 1980 to 2020.
+
+![Top Genres by Decade](top_genres_by_decade.png)

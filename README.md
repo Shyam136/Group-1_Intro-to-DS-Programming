@@ -54,3 +54,16 @@ To keep the repo clean and consistent:
 - Dataset bias: focuses only on U.S. domestic box office.  
 - Does not account for streaming, global markets, or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
+
+
+## Posting the Visualizations to the READ.ME
+### Budget vs. Gross by Rating
+
+Below is an interactive visualization showing the relationship between movie budgets and inflation-adjusted gross revenue, grouped by rating. Explore trends by hovering over points and filtering by rating.
+
+<iframe src="budget_gross_rating.html" width="100%" height="600" frameborder="0"></iframe>
+
+### Top Genres by Decades
+Below is an interactive visualization displaying the top movie genres for each decade from 1980 to 2020. Use the controls to explore how genre popularity has shifted over time.
+
+<iframe src="top_genres_by_decade.html" width="100%" height="600" frameborder="0"></iframe>

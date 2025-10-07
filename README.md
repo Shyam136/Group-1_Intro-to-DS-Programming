@@ -54,3 +54,13 @@ To keep the repo clean and consistent:
 - Dataset bias: focuses only on U.S. domestic box office.  
 - Does not account for streaming, global markets, or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
+
+## Visualizations
+
+### Genres Over Decades
+
+![Genres Over Decades](figures/genres_over_decades.png)
+
+### Budget vs Adjusted Gross by Rating
+
+![Budget vs Gross](figures/budget_vs_gross_rating.png)

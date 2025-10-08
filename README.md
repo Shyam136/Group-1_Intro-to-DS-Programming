@@ -71,8 +71,11 @@ To keep the repo clean and consistent:
 #### Dataset Overview
 
 Source: Daniel Grijalva’s Movies Dataset on Kaggle
+
 Size: 5,000+ movies
+
 Key Features: title, year, genre, duration, rating, votes, gross, director, actors, metascore, description
+
 #### Key Findings
 - Gross (domestic revenue) is highly skewed, with a few blockbusters dominating the top end.
 - Strong correlation between votes, rating, and gross—popular and well-rated movies tend to earn more.

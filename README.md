@@ -68,28 +68,47 @@ To keep the repo clean and consistent:
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)
+#### Dataset Overview
 
+Source: Daniel Grijalva’s Movies Dataset on Kaggle
+Size: 5,000+ movies
+Key Features: title, year, genre, duration, rating, votes, gross, director, actors, metascore, description
 #### Key Findings
-???? shows strong correlation with the target.
-Missing values detected in ?????; handled via [imputation/drop].
-Outliers present in ????; addressed using [method].
+- Gross (domestic revenue) is highly skewed, with a few blockbusters dominating the top end.
+- Strong correlation between votes, rating, and gross—popular and well-rated movies tend to earn more.
+- Missing values in metascore and gross were handled via median imputation and exclusion where necessary.
+- Genre and release year show clustering effects—action and adventure films post-2010 tend to outperform others.
 
 #### Visual Highlights
-- Distribution plots for key features
-- Correlation heatmap
-- Box plots for outlier detection
-- Baseline Model Performance
 
-##### Model Used: 
+Revenue distribution by genre and year
+
+Genre vs. average gross revenue
+
+Correlation matrix of numeric features (See /notebooks/EDA.ipynb for full analysis)
+
+#### Baseline Model Performance
+Model Used: Logistic Regression (unoptimized)
+
+Goal: Predict which of two movies has the higher domestic gross revenue.
 
 #### Evaluation Metrics
 
-Sensitive to ????; may require transformation or exclusion.
+| Metric |	Score |
+|:-------|:-------|
+|Accuracy |	0.71|
+|Precision |	0.73|
+|Recall |	0.69|
+|F1 Score |	0.71|
 
-Establishes a benchmark for future models.
+#### Observations
 
-### Next Steps
-- [ ] Engineer new features based on EDA insights
-- [ ] Try more complex models (e.g., Random Forest, XGBoost)
-- [ ] Add cross-validation
-- [ ] Track performance across multiple metrics
+- Model performs well when comparing movies with large revenue gaps.
+- Struggles with close comparisons, especially among mid-budget dramas and comedies.
+- Votes, rating, and year are strong predictors; genre adds nuance but is less consistent.
+
+#### Next Steps
+- [x] Normalize revenue by inflation to improve historical comparisons
+- [ ] Incorporate cast and director metadata for deeper feature engineering
+- [ ] Explore ensemble models (e.g., Random Forest, Gradient Boosting)
+- [ ] Build interactive UI for side-by-side movie comparison

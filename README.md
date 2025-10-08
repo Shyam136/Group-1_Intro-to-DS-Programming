@@ -74,15 +74,15 @@ To keep the repo clean and consistent:
 Missing values detected in ?????; handled via [imputation/drop].
 Outliers present in ????; addressed using [method].
 
-Visual Highlights
+#### Visual Highlights
 - Distribution plots for key features
 - Correlation heatmap
-- Box plots for outlier detection (See /notebooks/EDA.ipynb for full analysis)
+- Box plots for outlier detection
 - Baseline Model Performance
 
 ##### Model Used: 
 
-### Evaluation Metrics
+#### Evaluation Metrics
 
 Sensitive to ????; may require transformation or exclusion.
 

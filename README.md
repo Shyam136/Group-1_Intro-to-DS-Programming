@@ -64,3 +64,32 @@ To keep the repo clean and consistent:
 ### Budget vs Adjusted Gross by Rating
 
 ![Budget vs Gross](figures/budget_vs_gross_rating.png)
+
+
+## Preliminary Results & Insights
+### Exploratory Data Analysis (EDA)
+
+#### Key Findings
+???? shows strong correlation with the target.
+Missing values detected in ?????; handled via [imputation/drop].
+Outliers present in ????; addressed using [method].
+
+Visual Highlights
+- Distribution plots for key features
+- Correlation heatmap
+- Box plots for outlier detection (See /notebooks/EDA.ipynb for full analysis)
+- Baseline Model Performance
+
+##### Model Used: 
+
+### Evaluation Metrics
+
+Sensitive to ????; may require transformation or exclusion.
+
+Establishes a benchmark for future models.
+
+### Next Steps
+- [ ] Engineer new features based on EDA insights
+- [ ] Try more complex models (e.g., Random Forest, XGBoost)
+- [ ] Add cross-validation
+- [ ] Track performance across multiple metrics

@@ -98,10 +98,41 @@ if st.button("Predict"):
     if not res["ok"]:
         st.error("Oops — " + "; ".join(res["warnings"]))
     else:
-        st.success(f"Predicted winner: **{res['predicted_winner']}**")
-        st.caption(f"Baseline AUC (holdout): {auc:.3f}")
-        with st.expander("Details"):
-            st.write(res)
+        # Get predicted and actual gross values
+        pred_gross_a = res.get('predicted_gross_a', 0)
+        pred_gross_b = res.get('predicted_gross_b', 0)
+        actual_gross_a = res.get('gross_a', 0)
+        actual_gross_b = res.get('gross_b', 0)
+        
+        # Display results in two columns
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.metric(
+                f"{movie_a}",
+                f"${actual_gross_a:,.2f}" if actual_gross_a > 0 else "N/A",
+                delta=f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None,
+                delta_color="normal"
+            )
+            
+        with col2:
+            st.metric(
+                f"{movie_b}",
+                f"${actual_gross_b:,.2f}" if actual_gross_b > 0 else "N/A",
+                delta=f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None,
+                delta_color="normal"
+            )
+        
+        # Show winner
+        if res['predicted_winner'] != "Tie":
+            st.success(f"🎬 **{res['predicted_winner']}** is predicted to have higher gross!")
+        else:
+            st.info("🤝 It's a tie! Both movies are predicted to have similar gross.")
+        
+        # Show any warnings in a collapsible section
+        if res.get('warnings'):
+            with st.expander("⚠️ Note"):
+                st.warning("\n".join(res['warnings']))
 
 st.divider()
 

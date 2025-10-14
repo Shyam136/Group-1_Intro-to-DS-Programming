@@ -54,3 +54,64 @@ To keep the repo clean and consistent:
 - Dataset bias: focuses only on U.S. domestic box office.  
 - Does not account for streaming, global markets, or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
+
+## Visualizations
+
+### Genres Over Decades
+
+![Genres Over Decades](figures/genres_over_decades.png)
+
+### Budget vs Adjusted Gross by Rating
+
+![Budget vs Gross](figures/budget_vs_gross_rating.png)
+
+
+## Preliminary Results & Insights
+### Exploratory Data Analysis (EDA)
+#### Dataset Overview
+
+Source: Daniel Grijalva’s Movies Dataset on Kaggle
+
+Size: 5,000+ movies
+
+Key Features: title, year, genre, duration, rating, votes, gross, director, actors, metascore, description
+
+#### Key Findings
+- Gross (domestic revenue) is highly skewed, with a few blockbusters dominating the top end.
+- Strong correlation between votes, rating, and gross—popular and well-rated movies tend to earn more.
+- Missing values in metascore and gross were handled via median imputation and exclusion where necessary.
+- Genre and release year show clustering effects—action and adventure films post-2010 tend to outperform others.
+
+#### Visual Highlights
+
+Revenue distribution by genre and year
+
+Genre vs. average gross revenue
+
+Correlation matrix of numeric features (See /notebooks/EDA.ipynb for full analysis)
+
+#### Baseline Model Performance
+Model Used: Logistic Regression (unoptimized)
+
+Goal: Predict which of two movies has the higher domestic gross revenue.
+
+#### Evaluation Metrics
+
+| Metric |	Score |
+|:-------|:-------|
+|Accuracy |	0.71|
+|Precision |	0.73|
+|Recall |	0.69|
+|F1 Score |	0.71|
+
+#### Observations
+
+- Model performs well when comparing movies with large revenue gaps.
+- Struggles with close comparisons, especially among mid-budget dramas and comedies.
+- Votes, rating, and year are strong predictors; genre adds nuance but is less consistent.
+
+#### Next Steps
+- [x] Normalize revenue by inflation to improve historical comparisons
+- [ ] Incorporate cast and director metadata for deeper feature engineering
+- [ ] Explore ensemble models (e.g., Random Forest, Gradient Boosting)
+- [ ] Build interactive UI for side-by-side movie comparison

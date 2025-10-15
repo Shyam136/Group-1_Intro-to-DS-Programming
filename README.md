@@ -148,17 +148,28 @@ Scope: Streamlit web app development, backend services, and data integration.
 
 #### Communication and Feedback
 Weekly Standups: 30-minute check-ins
+
 Sprint Reviews: Stakeholder demos every week once app is in development
+
 User Feedback: analytics dashboard
+
 Retrospectives: Team-led reflection sessions
+
 
 #### Metrics and Evaluation
 Accuracy of movie data comparisons
+
 Feature adoption
+
 Bug count and resolution time
+
 Sprint velocity
+
 
 #### Adaptability
 Backlog grooming every sprint
+
 Pivot based on stakeholder feedback (e.g., add international gross option)
+
 Feature flags for A/B testing
+

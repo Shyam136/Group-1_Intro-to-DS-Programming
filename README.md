@@ -115,9 +115,8 @@ Goal: Predict which of two movies has the higher domestic gross revenue.
 - [ ] Incorporate cast and director metadata for deeper feature engineering
 - [ ] Explore ensemble models (e.g., Random Forest, Gradient Boosting)
 - [ ] Build interactive UI for side-by-side movie comparison
-- [ ] 
 
-### Methodology Description for “Movie Gross Guess” App
+### Methodology Description for “Movie Gross” App
 #### Overview
 Methodology Name: Agile (Scrum-inspired)
 Purpose: Deliver a fun, data-driven movie comparison app through rapid iterations and continuous user feedback.

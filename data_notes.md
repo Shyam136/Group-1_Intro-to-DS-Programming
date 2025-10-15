@@ -61,6 +61,7 @@
 ### Movies with null budget or gross
 
 
+
 #### only 132 movies have null gross values, and we cannot consider them for analysis
 #### 1607 movies have null budgets, but we will leave them in case budget does not have a significant impact on gross
 
@@ -72,6 +73,7 @@
 * Removed records with null gross values
 * Removed records of movies not produced in United States
     * field [is_domestic] added as boolean to faciliate removal
+* Removed records of movies with ratings "TV*" which denote a theatrical release of a previously made-for-television movie, which would skew box office popularity downward since it does not represent a premier or exclusive consumer channel.
 ## Removed Fields
 * None; All original fields exist with original values for the purpose of validation
 ## Additional Fields

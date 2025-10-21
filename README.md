@@ -65,6 +65,13 @@ To keep the repo clean and consistent:
 
 ![Budget vs Gross](figures/budget_vs_gross_rating.png)
 
+### Feature Importance Within Our Model
+
+![Feature Importance Plots](figures/improved/feature_importance_tuned_model.png)
+
+### Genre - Based Performance
+
+![Genre-Based Performance](figures/improved/genre_based_performance.png)
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)

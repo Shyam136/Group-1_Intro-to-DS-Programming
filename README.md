@@ -115,3 +115,61 @@ Goal: Predict which of two movies has the higher domestic gross revenue.
 - [ ] Incorporate cast and director metadata for deeper feature engineering
 - [ ] Explore ensemble models (e.g., Random Forest, Gradient Boosting)
 - [ ] Build interactive UI for side-by-side movie comparison
+
+### Methodology Description for “Movie Gross” App
+#### Overview
+Methodology Name: Agile (Scrum-inspired)
+Purpose: Deliver a fun, data-driven movie comparison app through rapid iterations and continuous user feedback.
+Scope: Streamlit web app development, backend services, and data integration.
+
+#### Core Principles
+- Iterative development with short sprints
+- Continuous delivery of playable features
+- User-centric design and feedback loops
+- Cross-functional collaboration
+- Embrace change and refine based on analytics
+
+#### Workflow Phases
+|Phase Description|	Deliverables|
+|:---------------|:-------------|
+|Sprint Planning|	Define goals, prioritize backlog items, estimate effort	Sprint backlog|
+|Design|	UX/UI mockups app flow, leaderboard concepts	Wireframes, design assets|
+|Development|	Implement features (e.g., movie comparison logic, scoring, user profiles)	Code commits, unit tests|
+|Testing|	Functional, regression, and usability testing	Test cases, bug reports
+|Review|	Demo sprint output, gather feedback from stakeholders	Sprint review notes|
+|Retrospective|	Reflect on process, identify improvements	Action items for next sprint|
+
+#### Tools and Artifacts
+- Project Management: Github
+- Version Control: GitHub
+- Design: 
+- CI/CD: 
+- Data Source: Kaggle
+
+#### Communication and Feedback
+Weekly Standups: 30-minute check-ins
+
+Sprint Reviews: Stakeholder demos every week once app is in development
+
+User Feedback: analytics dashboard
+
+Retrospectives: Team-led reflection sessions
+
+
+#### Metrics and Evaluation
+Accuracy of movie data comparisons
+
+Feature adoption
+
+Bug count and resolution time
+
+Sprint velocity
+
+
+#### Adaptability
+Backlog grooming every sprint
+
+Pivot based on stakeholder feedback (e.g., add international gross option)
+
+Feature flags for A/B testing
+

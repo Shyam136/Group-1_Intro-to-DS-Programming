@@ -21,8 +21,8 @@ The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~
 - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies) (Daniel Grijalvas, Kaggle).  
 - **Rows**: ~7,600 movies (1980–2020).  
 - **Features**:  
-  - *Continuous*: Budget, Gross (inflation-adjusted), Runtime.  
-  - *Categorical*: Genre, Rating, Year.  
+  - *Continuous*: Budget (Inflation-Adjusted), Gross (inflation-adjusted), Runtime, Score, Votes
+  - *Categorical*: Rating, Genre, Year, Director, Writer, Star, Decade, Company  
 - **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).  
 
 ---

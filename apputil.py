@@ -205,39 +205,99 @@ def prepare_features_for_regression(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.
 # -----------------------
 def train_baseline(df: pd.DataFrame, random_state: int = 42):
     """
-    Train a regression model to predict gross values directly.
+    Train a baseline regression model to predict gross values.
+    Uses only basic features for faster training.
     Returns: model, feature_cols, R2 score (holdout)
     """
+    # Use only essential features for the baseline
+    global NUMERICS, CATEGORICALS
+    original_numerics = NUMERICS.copy()
+    original_categoricals = CATEGORICALS.copy()
     
-    # Prepare features and target
-    df_clean = df.copy()
-    X, y, feature_cols = prepare_features_for_regression(df_clean)
+    try:
+        NUMERICS = ["runtime", "budget_adj", "year"]
+        CATEGORICALS = ["genre", "rating"]
+        
+        X, y, feature_cols = prepare_features_for_regression(df)
+        
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=random_state
+        )
+        
+        # Train a simple RandomForest model
+        model = RandomForestRegressor(
+            # Fewer trees for faster training
+            n_estimators=50,
+            random_state=random_state,
+            n_jobs=-1,
+            max_depth=5,
+            min_samples_split=10
+        )
+        
+        model.fit(X_train, y_train)
+        
+        # Calculate R2 score on test set
+        y_pred = model.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        
+        return model, feature_cols, r2
+    finally:
+        # Restore original feature lists
+        NUMERICS = original_numerics
+        CATEGORICALS = original_categoricals
+
+def train_improved(df: pd.DataFrame, random_state: int = 42):
+    """
+    Train an improved regression model with more features and better performance.
+    Returns: model, feature_cols, R2 score (holdout)
+    """
+    global NUMERICS, CATEGORICALS
+    original_numerics = NUMERICS.copy()
+    original_categoricals = CATEGORICALS.copy()
     
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=random_state
-    )
-    
-    # Create and train model
-    model = RandomForestRegressor(
-        n_estimators=100,
-        random_state=random_state,
-        n_jobs=-1
-    )
-    
-    # Train model
-    model.fit(X_train, y_train)
-    
-    # Evaluate
-    y_pred = model.predict(X_test)
-    r2 = r2_score(y_test, y_pred)
-    # Calculate RMSE manually for compatibility with older scikit-learn
-    mse = mean_squared_error(y_test, y_pred)
-    rmse = np.sqrt(mse)
-    
-    # Print some diagnostics
-    print(f"Training completed with {len(feature_cols)} features")
-    print(f"R2 Score: {r2:.3f}, RMSE: ${rmse:,.2f}")
+    try:
+        # Use more features for the improved model
+        NUMERICS = ["runtime", "budget_adj", "year", "score", "votes", "gross"]
+        CATEGORICALS = ["genre", "rating", "country", "director"]
+        
+        # Add some basic feature engineering
+        if 'budget_adj' in df.columns and 'year' in df.columns:
+            df['budget_year_ratio'] = df['budget_adj'] / (df['year'] - df['year'].min() + 1)
+            NUMERICS.append('budget_year_ratio')
+        
+        X, y, feature_cols = prepare_features_for_regression(df)
+        
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=random_state
+        )
+        
+        # Train a more sophisticated model
+        model = RandomForestRegressor(
+            n_estimators=200,  # More trees for better performance
+            max_depth=None,     # Let trees grow deeper
+            min_samples_split=5,
+            min_samples_leaf=2,
+            max_features='sqrt',
+            random_state=random_state,
+            n_jobs=-1,
+            verbose=0
+        )
+        
+        # Add some basic hyperparameter tuning with GridSearchCV if needed
+        # For simplicity, we'll use the default parameters here
+        model.fit(X_train, y_train)
+        
+        # Calculate R2 score on test set
+        y_pred = model.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        
+        return model, feature_cols, r2
+    finally:
+        # Restore original feature lists
+        NUMERICS = original_numerics
+        CATEGORICALS = original_categoricals
     
     return model, feature_cols, r2
 

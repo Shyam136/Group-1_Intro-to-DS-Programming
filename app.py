@@ -18,7 +18,14 @@ import pandas as pd
 from typing import Any, Iterable
 
 # Import helpers from apputil.py
-from apputil import load_processed, train_baseline, load_data, predict_gross, generate_insights
+from apputil import (
+    load_processed, 
+    train_baseline, 
+    train_improved,
+    load_data, 
+    predict_gross, 
+    generate_insights
+)
 
 # ---------- Page setup ----------
 st.set_page_config(page_title="Which Movie Will Gross More?", layout="wide")
@@ -32,6 +39,13 @@ with st.sidebar:
     st.caption("Dataset: Movie Industry (Daniel Grijalva, Kaggle).")
 
 st.title("Which Movie Will Gross More?")
+
+# ---------- Model Selection ----------
+model_type = st.sidebar.selectbox(
+    "Select Model",
+    ["Baseline (Faster)", "Improved (More Accurate)"],
+    help="Baseline is faster but less accurate. Improved uses more features but may be slower."
+)
 
 # ---------- Data loading ----------
 @st.cache_data(show_spinner=True)
@@ -86,13 +100,17 @@ st.divider()
 
 # ---------- Predict ----------
 @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
-def get_model_bundle():
+def get_model_bundle(use_improved: bool = False):
     df = load_processed()
-    model, feature_cols, auc = train_baseline(df)  # quick baseline retrain
-    return df, model, feature_cols, auc
+    if use_improved:
+        model, feature_cols, score = train_improved(df)
+    else:
+        model, feature_cols, score = train_baseline(df)
+    return df, model, feature_cols, score
 
 if st.button("Predict"):
-    df, model, feature_cols, auc = get_model_bundle()
+    use_improved = model_type == "Improved (More Accurate)"
+    df, model, feature_cols, score = get_model_bundle(use_improved=use_improved)
     res = predict_gross(movie_a, movie_b, df, model, feature_cols)
 
     if not res["ok"]:

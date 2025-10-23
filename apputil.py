@@ -275,8 +275,9 @@ def train_improved(df: pd.DataFrame, random_state: int = 42):
         
         # Train a more sophisticated model
         model = RandomForestRegressor(
-            n_estimators=200,  # More trees for better performance
-            max_depth=None,     # Let trees grow deeper
+             # More trees for better performance
+            n_estimators=200, 
+            max_depth=None,
             min_samples_split=5,
             min_samples_leaf=2,
             max_features='sqrt',

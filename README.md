@@ -21,9 +21,33 @@ The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~
 - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies) (Daniel Grijalvas, Kaggle).  
 - **Rows**: ~7,600 movies (1980–2020).  
 - **Features**:  
-  - *Continuous*: Budget, Gross (inflation-adjusted), Runtime.  
-  - *Categorical*: Genre, Rating, Year.  
-- **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).  
+  - *Continuous*: Budget (Inflation-Adjusted), Gross (inflation-adjusted), Runtime, Score, Votes
+  - *Categorical*: Rating, Genre, Year, Director, Writer, Star, Decade, Company  
+- **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).
+  * Remove movies where original release was outside US
+  * Remove movies where budget or gross was blank
+  * Extracted release year from release information (which then provides the decade)
+  * Adjust budget and gross for inflation
+  * Provide surrogate field for Company and udpate it with company names that that should be grouped - e.g. "Disney Studios" and "Disney Animation" become "Disney"
+  * Provide budget and gross in millions and rounded to the nearest to reduce dimensionality
+  * Ensured that any one actor, director, or writer was represented with the same spelling throughout the dataset.
+- Resulting Dataset:
+  * 5075 Records
+  * Fields:
+    * name
+    * rating
+    * genre
+    * year
+    * score
+    * votes
+    * director
+    * writer
+    * star
+    * runtime
+    * decade
+    * gross
+    * budget
+    * company
 
 ---
 

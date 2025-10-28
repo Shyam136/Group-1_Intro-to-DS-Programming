@@ -18,7 +18,14 @@ import pandas as pd
 from typing import Any, Iterable
 
 # Import helpers from apputil.py
-from apputil import load_processed, train_baseline, load_data, predict_gross, generate_insights
+from apputil import (
+    load_processed, 
+    train_baseline, 
+    train_improved,
+    load_data, 
+    predict_gross, 
+    generate_insights
+)
 
 # ---------- Page setup ----------
 st.set_page_config(page_title="Which Movie Will Gross More?", layout="wide")
@@ -32,6 +39,13 @@ with st.sidebar:
     st.caption("Dataset: Movie Industry (Daniel Grijalva, Kaggle).")
 
 st.title("Which Movie Will Gross More?")
+
+# ---------- Model Selection ----------
+model_type = st.sidebar.selectbox(
+    "Select Model",
+    ["Baseline (Faster)", "Improved (More Accurate)"],
+    help="Baseline is faster but less accurate. Improved uses more features but may be slower."
+)
 
 # ---------- Data loading ----------
 @st.cache_data(show_spinner=True)
@@ -86,13 +100,17 @@ st.divider()
 
 # ---------- Predict ----------
 @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
-def get_model_bundle():
+def get_model_bundle(use_improved: bool = False):
     df = load_processed()
-    model, feature_cols, auc = train_baseline(df)  # quick baseline retrain
-    return df, model, feature_cols, auc
+    if use_improved:
+        model, feature_cols, score = train_improved(df)
+    else:
+        model, feature_cols, score = train_baseline(df)
+    return df, model, feature_cols, score
 
 if st.button("Predict"):
-    df, model, feature_cols, auc = get_model_bundle()
+    use_improved = model_type == "Improved (More Accurate)"
+    df, model, feature_cols, score = get_model_bundle(use_improved=use_improved)
     res = predict_gross(movie_a, movie_b, df, model, feature_cols)
 
     if not res["ok"]:
@@ -107,20 +125,46 @@ if st.button("Predict"):
         # Display results in two columns
         col1, col2 = st.columns(2)
         
+        # Add custom CSS for larger delta value and arrow
+        st.markdown("""
+        <style>
+            [data-testid="stMetricDelta"] div {
+                font-size: 1.2rem !important;
+                font-weight: bold !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Helper function to get delta style
+        def get_delta_style(actual, predicted):
+            if actual == 0 or predicted == 0:
+                return "normal"
+            return "inverse" if predicted < actual else "normal"
+        
         with col1:
-            st.metric(
-                f"{movie_a}",
-                f"${actual_gross_a:,.2f}" if actual_gross_a > 0 else "N/A",
-                delta=f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None,
-                delta_color="normal"
-            )
+            # Get delta style for movie A
+            delta_color_a = get_delta_style(actual_gross_a, pred_gross_a)
+            delta_text_a = f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None
             
-        with col2:
+            # Show the metric with actual as main value and prediction as delta
             st.metric(
-                f"{movie_b}",
-                f"${actual_gross_b:,.2f}" if actual_gross_b > 0 else "N/A",
-                delta=f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None,
-                delta_color="normal"
+                movie_a,
+                f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
+                delta=delta_text_a,
+                delta_color=delta_color_a
+            )
+        
+        with col2:
+            # Get delta style for movie B
+            delta_color_b = get_delta_style(actual_gross_b, pred_gross_b)
+            delta_text_b = f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None
+            
+            # Show the metric with actual as main value and prediction as delta
+            st.metric(
+                movie_b,
+                f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
+                delta=delta_text_b,
+                delta_color=delta_color_b
             )
         
         # Show winner

@@ -5,8 +5,8 @@ from jinja2 import Template
 
 # CONFIGURATION
 METRICS_PATH = "metric path"  # or .json
-VISUALS_DIR = "visuals path"
-OUTPUT_DIR = "summaries path"
+VISUALS_DIR = "./figures"
+OUTPUT_DIR = "./summaries.md"
 APP_NAME = "Movie Comparer"
 
 # Ensure output directory exists

@@ -415,10 +415,10 @@ def predict_gross(movie_a: str, movie_b: str,
             out["gross_a"] = actual_gross_a
             out["gross_b"] = actual_gross_b
             
-            # Determine winner
-            if actual_gross_a > actual_gross_b:
+            # Determine winner based on predicted gross values
+            if pred_gross_a > pred_gross_b:
                 out["predicted_winner"] = movie_a
-            elif actual_gross_b > actual_gross_a:
+            elif pred_gross_b > pred_gross_a:
                 out["predicted_winner"] = movie_b
             else:
                 out["predicted_winner"] = "Tie"

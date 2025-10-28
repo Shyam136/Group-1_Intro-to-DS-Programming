@@ -125,20 +125,46 @@ if st.button("Predict"):
         # Display results in two columns
         col1, col2 = st.columns(2)
         
+        # Add custom CSS for larger delta value and arrow
+        st.markdown("""
+        <style>
+            [data-testid="stMetricDelta"] div {
+                font-size: 1.2rem !important;
+                font-weight: bold !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Helper function to get delta style
+        def get_delta_style(actual, predicted):
+            if actual == 0 or predicted == 0:
+                return "normal"
+            return "inverse" if predicted < actual else "normal"
+        
         with col1:
-            st.metric(
-                f"{movie_a}",
-                f"${actual_gross_a:,.2f}" if actual_gross_a > 0 else "N/A",
-                delta=f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None,
-                delta_color="normal"
-            )
+            # Get delta style for movie A
+            delta_color_a = get_delta_style(actual_gross_a, pred_gross_a)
+            delta_text_a = f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None
             
-        with col2:
+            # Show the metric with actual as main value and prediction as delta
             st.metric(
-                f"{movie_b}",
-                f"${actual_gross_b:,.2f}" if actual_gross_b > 0 else "N/A",
-                delta=f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None,
-                delta_color="normal"
+                movie_a,
+                f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
+                delta=delta_text_a,
+                delta_color=delta_color_a
+            )
+        
+        with col2:
+            # Get delta style for movie B
+            delta_color_b = get_delta_style(actual_gross_b, pred_gross_b)
+            delta_text_b = f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None
+            
+            # Show the metric with actual as main value and prediction as delta
+            st.metric(
+                movie_b,
+                f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
+                delta=delta_text_b,
+                delta_color=delta_color_b
             )
         
         # Show winner

@@ -4,10 +4,10 @@ import datetime
 from jinja2 import Template
 
 # CONFIGURATION
-METRICS_PATH = "data/weekly_metrics.csv"  # or .json
-VISUALS_DIR = "visuals/"
-OUTPUT_DIR = "summaries/"
-APP_NAME = "MovieMatch"
+METRICS_PATH = "metric path"  # or .json
+VISUALS_DIR = "visuals path"
+OUTPUT_DIR = "summaries path"
+APP_NAME = "Movie Comparer"
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)

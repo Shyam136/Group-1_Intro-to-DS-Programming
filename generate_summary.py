@@ -1,12 +1,11 @@
 import os
 import pandas as pd
 import datetime
-from jinja2 import Template
 
 # CONFIGURATION
 METRICS_PATH = "metric path"  # or .json
 VISUALS_DIR = "./figures"
-OUTPUT_DIR = "./summaries.md"
+OUTPUT_DIR = "./summaries"
 APP_NAME = "Movie Comparer"
 
 # Ensure output directory exists
@@ -33,28 +32,19 @@ def generate_markdown(metrics_df, image_files):
 
 def generate_html(metrics_df, image_files):
     date_str = datetime.date.today().strftime("%B %d, %Y")
-    html_template = Template("""
-    <html>
-    <head><title>{{ app_name }} Weekly Summary</title></head>
-    <body>
-        <h1>{{ app_name }} Weekly Summary</h1>
-        <p><strong>Date:</strong> {{ date }}</p>
-        <h2>📊 Model Metrics</h2>
-        {{ metrics_html | safe }}
-        <h2>🖼️ Visuals</h2>
-        {% for img in images %}
-            <img src="{{ visuals_dir }}{{ img }}" alt="{{ img }}" style="max-width:600px;"><br>
-        {% endfor %}
-    </body>
-    </html>
-    """)
-    return html_template.render(
-        app_name=APP_NAME,
-        date=date_str,
-        metrics_html=metrics_df.to_html(index=False),
-        images=image_files,
-        visuals_dir=VISUALS_DIR
-    )
+    html = f"""<html>
+<head><title>{APP_NAME} Weekly Summary</title></head>
+<body>
+    <h1>{APP_NAME} Weekly Summary</h1>
+    <p><strong>Date:</strong> {date_str}</p>
+    <h2>📊 Model Metrics</h2>
+    {metrics_df.to_html(index=False)}
+    <h2>🖼️ Visuals</h2>
+"""
+    for img in image_files:
+        html += f'<img src="{VISUALS_DIR}{img}" alt="{img}" style="max-width:600px;"><br>\n'
+    html += "</body>\n</html>"
+    return html
 
 def main():
     metrics_df = load_metrics(METRICS_PATH)

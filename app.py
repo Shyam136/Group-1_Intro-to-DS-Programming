@@ -132,6 +132,15 @@ if st.button("Predict"):
                 font-size: 1.2rem !important;
                 font-weight: bold !important;
             }
+            .stProgress > div > div > div > div {
+                background-color: #2ecc71;
+            }
+            .stMarkdown h3 {
+                margin-top: 0;
+            }
+            .stMarkdown p {
+                margin-bottom: 0.5rem;
+            }
         </style>
         """, unsafe_allow_html=True)
         
@@ -167,11 +176,64 @@ if st.button("Predict"):
                 delta_color=delta_color_b
             )
         
-        # Show winner
+        # Calculate confidence level (0-100%)
+        def calculate_confidence(gross_a, gross_b):
+            if gross_a == 0 and gross_b == 0:
+                return 50  # Neutral confidence for tie
+            total = abs(gross_a) + abs(gross_b)
+            if total == 0:
+                return 50
+            confidence = (max(gross_a, gross_b) / total) * 100
+            return min(max(confidence, 55), 95)  # Keep between 55-95% for visual distinction
+
+        # Calculate confidence for the prediction
+        confidence = calculate_confidence(pred_gross_a, pred_gross_b)
+        
+        # Show winner with confidence indicator
         if res['predicted_winner'] != "Tie":
+            # Color code based on confidence level
+            if confidence >= 75:
+                # Green for high confidence
+                color = "#2ecc71"  
+                confidence_text = "High confidence"
+            elif confidence >= 60:
+                # Orange for moderate confidence
+                color = "#f39c12"  
+                confidence_text = "Moderate confidence"
+            else:
+                # Red for low confidence
+                color = "#e74c3c"  
+                confidence_text = "Low confidence"
+            
+            # Display confidence bar and text
+            st.markdown(f"""
+            <div style='margin: 10px 0;'>
+                <div style='display: flex; justify-content: space-between; margin-bottom: 5px;'>
+                    <span>Prediction Confidence:</span>
+                    <span style='font-weight: bold; color: {color}'>{confidence_text} ({confidence:.0f}%)</span>
+                </div>
+                <div style='height: 8px; background: #ecf0f1; border-radius: 4px; overflow: hidden;'>
+                    <div style='height: 100%; width: {confidence}%; background: {color}; border-radius: 4px;'></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
             st.success(f"🎬 **{res['predicted_winner']}** is predicted to have higher gross!")
         else:
             st.info("🤝 It's a tie! Both movies are predicted to have similar gross.")
+            
+            # Show neutral confidence indicator for ties
+            st.markdown(f"""
+            <div style='margin: 10px 0;'>
+                <div style='display: flex; justify-content: space-between; margin-bottom: 5px;'>
+                    <span>Prediction Confidence:</span>
+                    <span style='font-weight: bold; color: #7f8c8d'>Neutral (50%)</span>
+                </div>
+                <div style='height: 8px; background: #ecf0f1; border-radius: 4px; overflow: hidden;'>
+                    <div style='height: 100%; width: 50%; background: #7f8c8d; border-radius: 4px;'></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
         
         # Show any warnings in a collapsible section
         if res.get('warnings'):

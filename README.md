@@ -17,13 +17,37 @@ The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~
 
 ---
 
-## Data Description (Stub – to be expanded by Neville)  
+## Data Description 
 - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies) (Daniel Grijalvas, Kaggle).  
 - **Rows**: ~7,600 movies (1980–2020).  
 - **Features**:  
-  - *Continuous*: Budget, Gross (inflation-adjusted), Runtime.  
-  - *Categorical*: Genre, Rating, Year.  
-- **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).  
+  - *Continuous*: Budget (Inflation-Adjusted), Gross (inflation-adjusted), Runtime, Score, Votes
+  - *Categorical*: Rating, Genre, Year, Director, Writer, Star, Decade, Company  
+- **Cleaning Steps**: 
+  * Remove movies where original release was outside US
+  * Remove movies where budget or gross was blank
+  * Extracted release year from release information (which then provides the decade)
+  * Adjust budget and gross for inflation
+  * Provide surrogate field for Company and udpate it with company names that that should be grouped - e.g. "Disney Studios" and "Disney Animation" become "Disney"
+  * Provide budget and gross in millions and rounded to the nearest to reduce dimensionality
+  * Ensured that any one actor, director, or writer was represented with the same spelling throughout the dataset.
+- Resulting Dataset:
+  * 5075 Records
+  * Fields:
+    * name
+    * rating
+    * genre
+    * year
+    * score
+    * votes
+    * director
+    * writer
+    * star
+    * runtime
+    * decade
+    * gross
+    * budget
+    * company
 
 ---
 
@@ -52,7 +76,7 @@ To keep the repo clean and consistent:
 
 ## Ethical Concerns (to expand later)  
 - Dataset bias: focuses only on U.S. domestic box office.  
-- Does not account for streaming, global markets, or post-release reception.  
+- Does not account for streaming, global markets, movies which were not initially theatrical releases or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
 
 ## Visualizations

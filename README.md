@@ -17,13 +17,37 @@ The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~
 
 ---
 
-## Data Description (Stub – to be expanded by Neville)  
+## Data Description 
 - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies) (Daniel Grijalvas, Kaggle).  
 - **Rows**: ~7,600 movies (1980–2020).  
 - **Features**:  
-  - *Continuous*: Budget, Gross (inflation-adjusted), Runtime.  
-  - *Categorical*: Genre, Rating, Year.  
-- **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).  
+  - *Continuous*: Budget (Inflation-Adjusted), Gross (inflation-adjusted), Runtime, Score, Votes
+  - *Categorical*: Rating, Genre, Year, Director, Writer, Star, Decade, Company  
+- **Cleaning Steps**: 
+  * Remove movies where original release was outside US
+  * Remove movies where budget or gross was blank
+  * Extracted release year from release information (which then provides the decade)
+  * Adjust budget and gross for inflation
+  * Provide surrogate field for Company and udpate it with company names that that should be grouped - e.g. "Disney Studios" and "Disney Animation" become "Disney"
+  * Provide budget and gross in millions and rounded to the nearest to reduce dimensionality
+  * Ensured that any one actor, director, or writer was represented with the same spelling throughout the dataset.
+- Resulting Dataset:
+  * 5075 Records
+  * Fields:
+    * name
+    * rating
+    * genre
+    * year
+    * score
+    * votes
+    * director
+    * writer
+    * star
+    * runtime
+    * decade
+    * gross
+    * budget
+    * company
 
 ---
 
@@ -52,7 +76,7 @@ To keep the repo clean and consistent:
 
 ## Ethical Concerns (to expand later)  
 - Dataset bias: focuses only on U.S. domestic box office.  
-- Does not account for streaming, global markets, or post-release reception.  
+- Does not account for streaming, global markets, movies which were not initially theatrical releases or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
 
 ## Visualizations
@@ -65,6 +89,13 @@ To keep the repo clean and consistent:
 
 ![Budget vs Gross](figures/budget_vs_gross_rating.png)
 
+### Feature Importance Within Our Model
+
+![Feature Importance Plots](figures/improved/feature_importance_tuned_model.png)
+
+### Genre - Based Performance
+
+![Genre-Based Performance](figures/improved/genre_based_performance.png)
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)
@@ -115,3 +146,61 @@ Goal: Predict which of two movies has the higher domestic gross revenue.
 - [ ] Incorporate cast and director metadata for deeper feature engineering
 - [ ] Explore ensemble models (e.g., Random Forest, Gradient Boosting)
 - [ ] Build interactive UI for side-by-side movie comparison
+
+### Methodology Description for “Movie Gross” App
+#### Overview
+Methodology Name: Agile (Scrum-inspired)
+Purpose: Deliver a fun, data-driven movie comparison app through rapid iterations and continuous user feedback.
+Scope: Streamlit web app development, backend services, and data integration.
+
+#### Core Principles
+- Iterative development with short sprints
+- Continuous delivery of playable features
+- User-centric design and feedback loops
+- Cross-functional collaboration
+- Embrace change and refine based on analytics
+
+#### Workflow Phases
+|Phase Description|	Deliverables|
+|:---------------|:-------------|
+|Sprint Planning|	Define goals, prioritize backlog items, estimate effort	Sprint backlog|
+|Design|	UX/UI mockups app flow, leaderboard concepts	Wireframes, design assets|
+|Development|	Implement features (e.g., movie comparison logic, scoring, user profiles)	Code commits, unit tests|
+|Testing|	Functional, regression, and usability testing	Test cases, bug reports
+|Review|	Demo sprint output, gather feedback from stakeholders	Sprint review notes|
+|Retrospective|	Reflect on process, identify improvements	Action items for next sprint|
+
+#### Tools and Artifacts
+- Project Management: Github
+- Version Control: GitHub
+- Design: 
+- CI/CD: 
+- Data Source: Kaggle
+
+#### Communication and Feedback
+Weekly Standups: 30-minute check-ins
+
+Sprint Reviews: Stakeholder demos every week once app is in development
+
+User Feedback: analytics dashboard
+
+Retrospectives: Team-led reflection sessions
+
+
+#### Metrics and Evaluation
+Accuracy of movie data comparisons
+
+Feature adoption
+
+Bug count and resolution time
+
+Sprint velocity
+
+
+#### Adaptability
+Backlog grooming every sprint
+
+Pivot based on stakeholder feedback (e.g., add international gross option)
+
+Feature flags for A/B testing
+

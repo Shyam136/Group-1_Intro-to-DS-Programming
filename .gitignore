@@ -1,0 +1,4 @@
+# models and artifacts
+models/
+*.joblib
+*.pkl

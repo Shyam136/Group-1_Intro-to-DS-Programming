@@ -1,239 +1,146 @@
-# model.py
 """
-Model training, evaluation, and prediction helpers.
+model.py
 
-Functions:
-- prepare_data(df, feature_cols=None, target_col='is_hit')
-- train_baselines(df, save_dir='models', random_state=42)
-- load_artifacts(save_dir='models')
-- predict_proba_for_pair(movie_row_a, movie_row_b, artifacts)
-- evaluate_models(X, y, artifacts)
+Train, evaluate, and save baseline models for movie gross comparison.
+Requires existing prepare_features(df) in apputil.py
+Saves artifacts to ./models/
 """
 
 from __future__ import annotations
 
-import logging
-from pathlib import Path
+import os
 from typing import Dict, Tuple, List
 
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (accuracy_score, f1_score, precision_score,
-                             recall_score, classification_report)
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+# Import prepare_features from your apputil. Adjust import path if needed.
+from apputil import prepare_features  # <- ensure apputil.py is in same package/root
 
 
-def prepare_data(
-    df: pd.DataFrame,
-    feature_cols: List[str] | None = None,
-    target_col: str = "is_hit",
-    hit_threshold: float | None = None,
-) -> Tuple[pd.DataFrame, pd.Series, Dict[str, List[str]]]:
-    """
-    Prepare features and target.
-    - If 'target_col' not present, create a binary 'is_hit' target:
-        is_hit = adjusted_gross > median(adjusted_gross)  (or hit_threshold if provided)
-    - feature_cols: list of columns to use. If None, auto-select numeric and some categoricals.
+MODEL_DIR = Path("models") if "Path" in globals() else __import__("pathlib").Path("models")
+MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
-    Returns (X, y, metadata) where metadata contains feature lists.
-    """
-    df = df.copy()
 
-    # Ensure adjusted gross exists
-    if "adjusted_gross" not in df.columns and "gross" in df.columns:
-        logger.warning("No 'adjusted_gross' column: attempting to use 'gross' as fallback.")
-        df["adjusted_gross"] = df["gross"]
+def _fit_model(model, X_train: pd.DataFrame, y_train: pd.Series):
+    """Fit model defensively and return fitted estimator."""
+    model.fit(X_train, y_train)
+    return model
 
-    # Create target if not present
-    if target_col not in df.columns:
-        if hit_threshold is None:
-            hit_threshold = df["adjusted_gross"].median()
-        df[target_col] = (df["adjusted_gross"] > hit_threshold).astype(int)
 
-    # Default feature selection: numeric columns except target + a handful of categoricals if present
-    if feature_cols is None:
-        numeric = df.select_dtypes(include=[np.number]).columns.tolist()
-        # remove fields we don't want
-        numeric = [c for c in numeric if c not in (target_col, "adjusted_gross", "gross")]
-        # choose some categorical columns
-        possible_cat = [c for c in ["genre", "rating", "decade", "primary_genre"] if c in df.columns]
-        feature_cols = numeric + possible_cat
-
-    # Filter to rows without NaN in feature cols and target (we keep machine-friendly pipeline to impute later if needed)
-    X = df[feature_cols].copy()
-    y = df[target_col].copy()
-
-    metadata = {
-        "feature_cols": feature_cols,
-        "numeric_features": X.select_dtypes(include=[np.number]).columns.tolist(),
-        "categorical_features": [c for c in feature_cols if c not in X.select_dtypes(include=[np.number]).columns.tolist()],
+def evaluate_model(model, X_test: pd.DataFrame, y_test: pd.Series) -> Dict[str, float]:
+    """Return common classification metrics. For AUC, require predict_proba support."""
+    y_pred = model.predict(X_test)
+    metrics = {
+        "accuracy": float(accuracy_score(y_test, y_pred)),
+        "precision": float(precision_score(y_test, y_pred, zero_division=0)),
+        "recall": float(recall_score(y_test, y_pred, zero_division=0)),
     }
-
-    return X, y, metadata
-
-
-def _build_pipeline(numeric_features: List[str], categorical_features: List[str]) -> Pipeline:
-    """
-    Build preprocessing + classifier pipeline. We return only preprocessing here and will
-    wrap with different classifiers later.
-    """
-    numeric_transformer = Pipeline(
-        steps=[
-            ("scaler", StandardScaler()),
-        ]
-    )
-
-    categorical_transformer = Pipeline(
-        steps=[
-            ("onehot", OneHotEncoder(handle_unknown="ignore", sparse=False)),
-        ]
-    )
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_transformer, numeric_features),
-            ("cat", categorical_transformer, categorical_features),
-        ],
-        remainder="drop",
-        sparse_threshold=0,
-    )
-
-    return preprocessor
+    # AUC if predict_proba available and y_test has both classes
+    try:
+        if len(np.unique(y_test)) == 2:
+            proba = model.predict_proba(X_test)[:, 1]
+            metrics["auc"] = float(roc_auc_score(y_test, proba))
+        else:
+            metrics["auc"] = float("nan")
+    except Exception:
+        metrics["auc"] = float("nan")
+    return metrics
 
 
-def train_baselines(
+def train_and_evaluate(
     df: pd.DataFrame,
-    save_dir: str = "models",
-    test_size: float = 0.2,
     random_state: int = 42,
+    test_size: float = 0.2,
 ) -> Dict[str, Dict]:
     """
-    Train LogisticRegression and RandomForest baselines, evaluate, and save artifacts.
-    Returns a dict with metadata, scores, and paths.
-    Artifacts saved: pipeline, models, and a metadata joblib file.
-    """
-    save_dir = Path(save_dir)
-    save_dir.mkdir(parents=True, exist_ok=True)
+    Prepare features using apputil.prepare_features, train two models,
+    evaluate them on a holdout set, save models and metadata to models/.
 
-    X, y, meta = prepare_data(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-
-    preprocessor = _build_pipeline(meta["numeric_features"], meta["categorical_features"])
-
-    # Logistic Regression pipeline
-    log_clf = Pipeline(steps=[("preproc", preprocessor), ("clf", LogisticRegression(max_iter=500, random_state=random_state))])
-    rf_clf = Pipeline(steps=[("preproc", preprocessor), ("clf", RandomForestClassifier(n_estimators=200, random_state=random_state))])
-
-    logger.info("Training Logistic Regression...")
-    log_clf.fit(X_train, y_train)
-
-    logger.info("Training Random Forest...")
-    rf_clf.fit(X_train, y_train)
-
-    # Evaluate
-    def eval_pipeline(pipe, X_t, y_t):
-        preds = pipe.predict(X_t)
-        probs = pipe.predict_proba(X_t)[:, 1] if hasattr(pipe, "predict_proba") else None
-        return {
-            "accuracy": accuracy_score(y_t, preds),
-            "precision": precision_score(y_t, preds, zero_division=0),
-            "recall": recall_score(y_t, preds, zero_division=0),
-            "f1": f1_score(y_t, preds, zero_division=0),
-            "report": classification_report(y_t, preds, zero_division=0),
-            "preds": preds,
-            "probs": probs,
+    Returns:
+        results: {
+            "logistic": {"model_path": str, "metrics": {...}, "feature_cols":[...]},
+            "random_forest": {...}
         }
+    """
+    # Build features
+    X, y, feature_cols = prepare_features(df)
 
-    scores_log = eval_pipeline(log_clf, X_test, y_test)
-    scores_rf = eval_pipeline(rf_clf, X_test, y_test)
+    # drop rows with missing values in X or y
+    df_xy = pd.concat([X, y.rename("_target")], axis=1)
+    use = df_xy.dropna()
+    if use.empty:
+        raise ValueError("No usable rows after dropping NA — check your processed dataset")
 
-    # Save artifacts
-    log_path = save_dir / "logistic_pipeline.joblib"
-    rf_path = save_dir / "rf_pipeline.joblib"
-    meta_path = save_dir / "metadata.joblib"
+    X_use = use[feature_cols]
+    y_use = use["_target"].astype(int)
 
-    joblib.dump(log_clf, log_path)
-    joblib.dump(rf_clf, rf_path)
-    joblib.dump(meta, meta_path)
+    X_tr, X_te, y_tr, y_te = train_test_split(
+        X_use, y_use, test_size=test_size, random_state=random_state, stratify=y_use
+    )
 
-    results = {
-        "logistic": {"path": str(log_path), "scores": scores_log},
-        "random_forest": {"path": str(rf_path), "scores": scores_rf},
-        "meta": {"path": str(meta_path), "content": meta},
+    results: Dict[str, Dict] = {}
+
+    # Logistic Regression baseline
+    log = LogisticRegression(max_iter=500)
+    log = _fit_model(log, X_tr, y_tr)
+    log_metrics = evaluate_model(log, X_te, y_te)
+    log_path = MODEL_DIR / "model_logistic.joblib"
+    joblib.dump({"model": log, "feature_cols": feature_cols}, log_path)
+    results["logistic"] = {
+        "model_path": str(log_path),
+        "metrics": log_metrics,
+        "feature_cols": feature_cols,
     }
 
-    logger.info("Saved models to %s", save_dir)
+    # Random Forest baseline
+    rf = RandomForestClassifier(n_estimators=200, random_state=random_state, n_jobs=-1)
+    rf = _fit_model(rf, X_tr, y_tr)
+    rf_metrics = evaluate_model(rf, X_te, y_te)
+    rf_path = MODEL_DIR / "model_random_forest.joblib"
+    joblib.dump({"model": rf, "feature_cols": feature_cols}, rf_path)
+    results["random_forest"] = {
+        "model_path": str(rf_path),
+        "metrics": rf_metrics,
+        "feature_cols": feature_cols,
+    }
+
+    # Optionally save a small JSON/CSV summary of metrics
+    try:
+        import json
+
+        with open(MODEL_DIR / "metrics_summary.json", "w") as f:
+            json.dump(results, f, indent=2)
+    except Exception:
+        pass
+
     return results
 
 
-def load_artifacts(save_dir: str = "models") -> Dict:
-    """Load saved models + metadata. Returns dict with keys: logistic, random_forest, meta"""
-    save_dir = Path(save_dir)
-    logistic = joblib.load(save_dir / "logistic_pipeline.joblib")
-    rf = joblib.load(save_dir / "rf_pipeline.joblib")
-    meta = joblib.load(save_dir / "metadata.joblib")
-    return {"logistic": logistic, "random_forest": rf, "meta": meta}
+def load_saved_model(path: str):
+    """Load a saved joblib model container (dict with model and feature_cols)."""
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Model not found: {path}")
+    return joblib.load(path)
 
 
-def predict_proba_for_pair(
-    movie_row_a: pd.Series, movie_row_b: pd.Series, artifacts: Dict, model_name: str = "random_forest"
-) -> Dict[str, float]:
-    """
-    Given two movie rows (Series with feature columns), return a dict:
-    { "movie_a_name": prob, "movie_b_name": prob, "winner": "A"|"B", "probabilities": (pa, pb) }
-    - artifacts is the result of load_artifacts()
-    - movie_row_* should include the same features used in training.
-    """
-    model = artifacts[model_name]
-    meta = artifacts["meta"]
+if __name__ == "__main__":
+    # convenience CLI: train on processed dataset if present
+    print("Training models on processed data (expects data/processed/movies_model.csv)...")
+    from apputil import load_processed
 
-    feature_cols = meta.get("feature_cols", None)
-    if feature_cols is None:
-        raise RuntimeError("Feature metadata missing in artifacts.")
-
-    # Build single-row dataframes
-    Xa = pd.DataFrame([movie_row_a[feature_cols]])
-    Xb = pd.DataFrame([movie_row_b[feature_cols]])
-
-    # Predict probabilities for class 1 (is_hit)
-    pa = model.predict_proba(Xa)[:, 1][0] if hasattr(model, "predict_proba") else model.predict(Xa)[0]
-    pb = model.predict_proba(Xb)[:, 1][0] if hasattr(model, "predict_proba") else model.predict(Xb)[0]
-
-    winner = "A" if pa > pb else ("B" if pb > pa else "Tie")
-
-    return {
-        "movie_a_prob": float(pa),
-        "movie_b_prob": float(pb),
-        "winner": winner,
-        "movie_a_name": movie_row_a.get("title", "Movie A"),
-        "movie_b_name": movie_row_b.get("title", "Movie B"),
-    }
-
-
-def evaluate_models(X: pd.DataFrame, y: pd.Series, artifacts: Dict) -> Dict[str, Dict]:
-    """
-    Produce evaluation metrics on provided X,y using loaded artifacts.
-    Returns dict with metrics for both models.
-    """
-    out = {}
-    for key in ("logistic", "random_forest"):
-        pipe = artifacts[key]
-        preds = pipe.predict(X)
-        probs = pipe.predict_proba(X)[:, 1] if hasattr(pipe, "predict_proba") else None
-        out[key] = {
-            "accuracy": accuracy_score(y, preds),
-            "precision": precision_score(y, preds, zero_division=0),
-            "recall": recall_score(y, preds, zero_division=0),
-            "f1": f1_score(y, preds, zero_division=0),
-            "report": classification_report(y, preds, zero_division=0),
-        }
-    return out
+    df_proc = load_processed()
+    res = train_and_evaluate(df_proc)
+    print("Done. Results:")
+    for name, detail in res.items():
+        print(name, detail["metrics"])

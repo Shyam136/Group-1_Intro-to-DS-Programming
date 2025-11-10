@@ -81,21 +81,13 @@ To keep the repo clean and consistent:
 
 ## Visualizations
 
-### Genres Over Decades
-
-![Genres Over Decades](figures/genres_over_decades.png)
-
-### Budget vs Adjusted Gross by Rating
-
-![Budget vs Gross](figures/budget_vs_gross_rating.png)
-
 ### Feature Importance Within Our Model
 
-![Feature Importance Plots](figures/improved/feature_importance_tuned_model.png)
+![Feature Comparison Between Two Models](figures/improved/feature_importance_comparison.png)
 
-### Genre - Based Performance
+### Genre Profit Margin Trends
 
-![Genre-Based Performance](figures/improved/genre_based_performance.png)
+![Genre Profit Margin Trends](figures/improved/genre_profit_margin.png)
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)

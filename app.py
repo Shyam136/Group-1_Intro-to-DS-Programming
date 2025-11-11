@@ -24,7 +24,9 @@ from apputil import (
     train_improved,
     load_data, 
     predict_gross, 
-    generate_insights
+    generate_insights,
+    ID_COL,
+    _row_to_features,
 )
 
 tab1, tab2 = st.tabs(["Main App", "MVP Features"])
@@ -180,18 +182,33 @@ with tab1:
                     delta_color=delta_color_b
                 )
             
-            # Calculate confidence level (0-100%)
-            def calculate_confidence(gross_a, gross_b):
-                if gross_a == 0 and gross_b == 0:
-                    return 50  # Neutral confidence for tie
-                total = abs(gross_a) + abs(gross_b)
-                if total == 0:
-                    return 50
-                confidence = (max(gross_a, gross_b) / total) * 100
-                return min(max(confidence, 55), 95)  # Keep between 55-95% for visual distinction
+            def calculate_confidence(model, xa, xb):
+                """Calculate confidence based on model's predictions across all trees"""
+                # Convert to numpy arrays to avoid feature name warnings
+                xa_array = xa.values.reshape(1, -1)
+                xb_array = xb.values.reshape(1, -1)
+                
+                # Get predictions from all trees for both movies
+                preds_a = [tree.predict(xa_array)[0] for tree in model.estimators_]
+                preds_b = [tree.predict(xb_array)[0] for tree in model.estimators_]
+                
+                # Count how often movie A is predicted to gross more than B
+                a_wins = sum(1 for a, b in zip(preds_a, preds_b) if a > b)
+                confidence = (a_wins / len(preds_a)) * 100
+                
+                # Return confidence between 50-100% (since we don't care which is higher, just how certain)
+                return max(min(confidence, 95), 100 - confidence)
 
-            # Calculate confidence for the prediction
-            confidence = calculate_confidence(pred_gross_a, pred_gross_b)
+            # Calculate confidence using model's predictions
+            try:
+                # Get the feature vectors for both movies
+                xa = _row_to_features(df[df[ID_COL].str.casefold() == movie_a.casefold()].iloc[0], feature_cols)[feature_cols]
+                xb = _row_to_features(df[df[ID_COL].str.casefold() == movie_b.casefold()].iloc[0], feature_cols)[feature_cols]
+                confidence = calculate_confidence(model, xa, xb)
+            except Exception as e:
+                print(f"Error calculating confidence: {e}")
+                #fallback value
+                confidence = 60
             
             # Show winner with confidence indicator
             if res['predicted_winner'] != "Tie":

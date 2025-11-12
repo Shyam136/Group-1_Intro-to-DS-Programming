@@ -17,13 +17,13 @@ The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~
 
 ---
 
-## Data Description (Stub – to be expanded by Neville)  
+## Data Description 
 - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies) (Daniel Grijalvas, Kaggle).  
 - **Rows**: ~7,600 movies (1980–2020).  
 - **Features**:  
   - *Continuous*: Budget (Inflation-Adjusted), Gross (inflation-adjusted), Runtime, Score, Votes
   - *Categorical*: Rating, Genre, Year, Director, Writer, Star, Decade, Company  
-- **Cleaning Steps**: Inflation adjustment, handling missing values, feature encoding (to be documented).
+- **Cleaning Steps**: 
   * Remove movies where original release was outside US
   * Remove movies where budget or gross was blank
   * Extracted release year from release information (which then provides the decade)
@@ -76,26 +76,18 @@ To keep the repo clean and consistent:
 
 ## Ethical Concerns (to expand later)  
 - Dataset bias: focuses only on U.S. domestic box office.  
-- Does not account for streaming, global markets, or post-release reception.  
+- Does not account for streaming, global markets, movies which were not initially theatrical releases or post-release reception.  
 - Predictions should not be seen as guarantees but as exploratory guidance.
 
 ## Visualizations
 
-### Genres Over Decades
-
-![Genres Over Decades](figures/genres_over_decades.png)
-
-### Budget vs Adjusted Gross by Rating
-
-![Budget vs Gross](figures/budget_vs_gross_rating.png)
-
 ### Feature Importance Within Our Model
 
-![Feature Importance Plots](figures/improved/feature_importance_tuned_model.png)
+![Feature Comparison Between Two Models](figures/improved/feature_importance_comparison.png)
 
-### Genre - Based Performance
+### Genre Profit Margin Trends
 
-![Genre-Based Performance](figures/improved/genre_based_performance.png)
+![Genre Profit Margin Trends](figures/improved/genre_profit_margin.png)
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)

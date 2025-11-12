@@ -3,18 +3,22 @@ apputil.py — Baseline model + helpers for the Streamlit app.
 
 Public functions:
 - load_data()
-- train_baseline(df=None)
-- predict_gross(movie_a, movie_b, df=None, model=None)
-- generate_insights(df=None)
+- load_processed()
+- prepare_features(), prepare_features_for_regression()
+- train_baseline(), train_improved()
+- predict_gross()
+- generate_insights()
+- load_model_artifact(), predict_with_saved_model()   <- NEW
 """
 
 from __future__ import annotations
 from pathlib import Path
-from typing import Tuple, List, Dict, Any
+from typing import Tuple, List, Dict, Any, Union
 
 # Data handling
 import pandas as pd
 import numpy as np
+import joblib
 
 # Scikit-learn imports
 from sklearn.ensemble import RandomForestRegressor
@@ -40,13 +44,12 @@ ID_COL = "name"              # Neville’s cleaned “movie title” column (adj
 def load_data() -> pd.DataFrame:
     """
     Load the raw movie dataset.
-    This is a placeholder - update with your actual data loading logic.
+    Attempts to load processed model-ready data first (load_processed).
+    Falls back to raw CSV paths under Data/raw/.
     """
     try:
-        # Try to load from the processed data first
         return load_processed()
     except FileNotFoundError:
-        # Fallback to raw data if processed not available
         raw_paths = [
             "Data/raw/movies.csv",
             "./Data/raw/movies.csv",
@@ -55,23 +58,23 @@ def load_data() -> pd.DataFrame:
         for p in raw_paths:
             if Path(p).is_file():
                 return pd.read_csv(p)
-        raise FileNotFoundError("Could not find movies data file")
+        raise FileNotFoundError("Could not find movies data file (raw or processed).")
+
 
 def load_processed() -> pd.DataFrame:
     """
     Load the final, model-ready dataset exported by data cleaning.
-    Expected at data/processed/movies_model.csv.
+    Expected at Data/processed/movies_model.csv (or similar).
     """
     for p in PROCESSED_PATHS:
         if Path(p).is_file():
             df = pd.read_csv(p)
             break
     else:
-        raise FileNotFoundError("Could not find data/processed/movies_model.csv")
+        raise FileNotFoundError("Could not find Data/processed/movies_model.csv")
 
     # Basic hygiene
-    # Ensure numeric types (adjust column names if your schema differs)
-    for col in ["budget_adj", "gross_adj", "runtime", "year"]:
+    for col in ["budget_adj", "gross_adj", "gross", "runtime", "year", "score", "votes"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -85,118 +88,116 @@ def load_processed() -> pd.DataFrame:
 # -----------------------
 # Feature prep
 # -----------------------
-# Initialize with empty lists, will be updated based on actual data
+# Initialize with defaults — these are adjusted at train-* time if needed
 CATEGORICALS = ["genre", "rating", "decade"]
-NUMERICS = ["runtime"]  # Start with just runtime which is more commonly available
+NUMERICS = ["runtime"]  # baseline; will be expanded in training helpers
+
 
 def _get_available_columns(df: pd.DataFrame) -> Tuple[List[str], List[str]]:
-    """Return available numeric and categorical columns"""
+    """Return available numeric and categorical columns that we will use."""
     available_numerics = [col for col in NUMERICS if col in df.columns]
     available_categoricals = [col for col in CATEGORICALS if col in df.columns]
-    
-    # If we don't have any numeric features, try to find some
+
     if not available_numerics:
-        potential_numerics = ["budget", "gross", "runtime", "year", "score", "votes"]
+        potential_numerics = ["budget_adj", "gross_adj", "budget", "gross", "runtime", "year", "score", "votes"]
         available_numerics = [col for col in potential_numerics if col in df.columns]
-    
+
     return available_numerics, available_categoricals
+
 
 def prepare_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, List[str]]:
     """
-    Prepare features and target for gross prediction.
-    Target is 1 if the movie's gross is above median, 0 otherwise.
+    Prepare features and target for a classification baseline.
+    Target is TARGET_COL (1 if above median gross else 0) or a derived proxy.
+    Returns (X, y, feature_cols).
     """
     df = df.copy()
-    
-    # Get available columns
-    available_numerics, available_categoricals = _get_available_columns(df)
-    
-    # If target column doesn't exist, create it based on gross
-    if TARGET_COL not in df.columns and 'gross' in df.columns:
-        # Mark movies with above-median gross as 1, others as 0
-        median_gross = df['gross'].median()
-        df[TARGET_COL] = (df['gross'] > median_gross).astype(int)
-    elif TARGET_COL not in df.columns:
-        # If we don't have gross data, create a dummy target
-        df[TARGET_COL] = 0
-        if len(df) > 1:
-            # Make half the movies "winners" for balance
-            df.loc[df.sample(frac=0.5, random_state=42).index, TARGET_COL] = 1
 
-    # Handle missing values in features
+    available_numerics, available_categoricals = _get_available_columns(df)
+
+    # Create target if missing
+    if TARGET_COL not in df.columns:
+        if "gross" in df.columns:
+            median_gross = df["gross"].median()
+            df[TARGET_COL] = (df["gross"] > median_gross).astype(int)
+        else:
+            # fallback synthetic target for small/demo sets
+            df[TARGET_COL] = 0
+            if len(df) > 1:
+                df.loc[df.sample(frac=0.5, random_state=42).index, TARGET_COL] = 1
+
+    # Clean numeric and categorical fields
     for col in available_numerics + available_categoricals:
         if col in df.columns:
             if col in available_numerics:
-                df[col] = pd.to_numeric(df[col], errors='coerce')
-                df[col] = df[col].fillna(df[col].median() if not df[col].isnull().all() else 0)
-            else:  # Categorical
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+                if not df[col].isnull().all():
+                    df[col] = df[col].fillna(df[col].median())
+                else:
+                    df[col] = df[col].fillna(0)
+            else:
                 df[col] = df[col].fillna("unknown").astype(str)
 
-    # One-hot encode categoricals (only if we have any)
+    # One-hot encode categoricals
     if available_categoricals:
         X_cat = pd.get_dummies(df[available_categoricals], drop_first=False)
     else:
         X_cat = pd.DataFrame(index=df.index)
-        
-    # Get numeric features (only if we have any)
-    if available_numerics:
-        X_num = df[available_numerics].copy()
-    else:
-        X_num = pd.DataFrame(index=df.index)
 
+    X_num = df[available_numerics].copy() if available_numerics else pd.DataFrame(index=df.index)
     X = pd.concat([X_num, X_cat], axis=1)
+
+    # Ensure at least one feature
+    if X.shape[1] == 0:
+        X["dummy_feature"] = 1
+
     y = df[TARGET_COL].astype(int)
 
-    # Ensure we have at least some features
-    if X.shape[1] == 0:
-        X["dummy_feature"] = 1  # Add a dummy feature if none exist
-        
-    # Ensure we have a balanced target if possible
+    # Make sure y has at least two classes (simple flip if necessary)
     if y.nunique() == 1 and len(y) > 1:
-        y.iloc[0] = 1 - y.iloc[0]  # Flip one label to ensure two classes
+        y.iloc[0] = 1 - y.iloc[0]
 
     feature_cols = X.columns.tolist()
     return X, y, feature_cols
 
+
 def prepare_features_for_regression(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, List[str]]:
     """
-    Prepare features and target for gross prediction (regression).
-    Target is the gross value.
+    Prepare features and target for regression (predicting gross).
+    Returns (X, y, feature_cols).
     """
     df = df.copy()
-    
-    # Get available columns
+
     available_numerics, available_categoricals = _get_available_columns(df)
-    
-    # Ensure we have a target
-    if 'gross' not in df.columns:
-        raise ValueError("'gross' column not found in the dataset")
-    
-    # Handle missing values in features
+
+    if "gross" not in df.columns:
+        raise ValueError("'gross' column not found in the dataset for regression target")
+
+    # Clean features
     for col in available_numerics + available_categoricals:
         if col in df.columns:
             if col in available_numerics:
-                df[col] = pd.to_numeric(df[col], errors='coerce')
-                df[col] = df[col].fillna(df[col].median() if not df[col].isnull().all() else 0)
-            else:  # Categorical
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+                if not df[col].isnull().all():
+                    df[col] = df[col].fillna(df[col].median())
+                else:
+                    df[col] = df[col].fillna(0)
+            else:
                 df[col] = df[col].fillna("unknown").astype(str)
-    
-    # Select features
-    X = df[available_numerics].copy()
-    
-    # Add one-hot encoded categorical variables
+
+    # Start with numeric features
+    X = df[available_numerics].copy() if available_numerics else pd.DataFrame(index=df.index)
+
+    # Add categorical one-hot columns (prefix optional)
     for cat_col in available_categoricals:
         if cat_col in df.columns:
             dummies = pd.get_dummies(df[cat_col], prefix=cat_col, drop_first=True)
             X = pd.concat([X, dummies], axis=1)
-    
-    # Ensure we have at least one feature
+
     if X.empty:
-        X['dummy'] = 1  # Add a constant feature if no other features exist
-    
-    # Get target (gross)
-    y = df['gross'].copy()
-    
+        X["dummy"] = 1
+
+    y = pd.to_numeric(df["gross"], errors="coerce")
     return X, y, X.columns.tolist()
 
 
@@ -205,41 +206,82 @@ def prepare_features_for_regression(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.
 # -----------------------
 def train_baseline(df: pd.DataFrame, random_state: int = 42):
     """
-    Train a regression model to predict gross values directly.
-    Returns: model, feature_cols, R2 score (holdout)
+    Train a baseline regression model to predict gross values.
+    Returns: (model, feature_cols, r2)
     """
-    
-    # Prepare features and target
-    df_clean = df.copy()
-    X, y, feature_cols = prepare_features_for_regression(df_clean)
-    
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=random_state
-    )
-    
-    # Create and train model
-    model = RandomForestRegressor(
-        n_estimators=100,
-        random_state=random_state,
-        n_jobs=-1
-    )
-    
-    # Train model
-    model.fit(X_train, y_train)
-    
-    # Evaluate
-    y_pred = model.predict(X_test)
-    r2 = r2_score(y_test, y_pred)
-    # Calculate RMSE manually for compatibility with older scikit-learn
-    mse = mean_squared_error(y_test, y_pred)
-    rmse = np.sqrt(mse)
-    
-    # Print some diagnostics
-    print(f"Training completed with {len(feature_cols)} features")
-    print(f"R2 Score: {r2:.3f}, RMSE: ${rmse:,.2f}")
-    
-    return model, feature_cols, r2
+    global NUMERICS, CATEGORICALS
+    original_numerics = NUMERICS.copy()
+    original_categoricals = CATEGORICALS.copy()
+
+    try:
+        NUMERICS = ["runtime", "budget_adj", "year"]
+        CATEGORICALS = ["genre", "rating"]
+
+        X, y, feature_cols = prepare_features_for_regression(df)
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=random_state
+        )
+
+        model = RandomForestRegressor(
+            n_estimators=50,
+            random_state=random_state,
+            n_jobs=-1,
+            max_depth=5,
+            min_samples_split=10
+        )
+
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+
+        return model, feature_cols, r2
+    finally:
+        NUMERICS = original_numerics
+        CATEGORICALS = original_categoricals
+
+
+def train_improved(df: pd.DataFrame, random_state: int = 42):
+    """
+    Train a stronger regression model using more features.
+    Returns: (model, feature_cols, r2)
+    """
+    global NUMERICS, CATEGORICALS
+    original_numerics = NUMERICS.copy()
+    original_categoricals = CATEGORICALS.copy()
+
+    try:
+        NUMERICS = ["runtime", "budget_adj", "year", "score", "votes", "gross"]
+        CATEGORICALS = ["genre", "rating", "country", "director"]
+
+        if "budget_adj" in df.columns and "year" in df.columns:
+            df["budget_year_ratio"] = df["budget_adj"] / (df["year"] - df["year"].min() + 1)
+            NUMERICS.append("budget_year_ratio")
+
+        X, y, feature_cols = prepare_features_for_regression(df)
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=random_state
+        )
+
+        model = RandomForestRegressor(
+            n_estimators=200,
+            max_depth=None,
+            min_samples_split=5,
+            min_samples_leaf=2,
+            max_features="sqrt",
+            random_state=random_state,
+            n_jobs=-1,
+            verbose=0
+        )
+
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        return model, feature_cols, r2
+    finally:
+        NUMERICS = original_numerics
+        CATEGORICALS = original_categoricals
 
 
 # -----------------------
@@ -247,65 +289,54 @@ def train_baseline(df: pd.DataFrame, random_state: int = 42):
 # -----------------------
 def _row_to_features(row: pd.Series, feature_cols: List[str]) -> pd.DataFrame:
     """Convert a single movie row to the same feature columns used in training."""
-    # Debug: Show available columns in the row
-    print(f"\n=== Processing: {row.get(ID_COL, 'Unknown')} ===")
-    print("Available columns in row:", [col for col in row.index if pd.notna(row[col])])
-    
-    # Initialize with all feature columns set to 0
+    # Debugging prints (helpful during development)
+    try:
+        print(f"\n=== Processing: {row.get(ID_COL, 'Unknown')} ===")
+    except Exception:
+        pass
+
+    # Initialize with zeros
     x = pd.DataFrame(0, index=[0], columns=feature_cols)
-    
-    # Get numeric features (those that aren't one-hot encoded)
-    numeric_cols = [col for col in ['runtime', 'year', 'gross', 'budget', 'score', 'votes'] 
-                   if col in feature_cols]
-    
-    # Handle numeric features
-    for col in numeric_cols:
-        if col in row and not pd.isna(row[col]):
+
+    # Numeric candidates to try map from row to features
+    numeric_candidates = ['runtime', 'year', 'gross', 'budget_adj', 'budget', 'score', 'votes']
+    for col in numeric_candidates:
+        if col in feature_cols and col in row and pd.notna(row[col]):
             try:
                 x[col] = float(row[col])
-            except (ValueError, TypeError):
+            except Exception:
                 x[col] = 0.0
-    
-    # Handle categorical features (genre, rating, decade)
-    for col_type in ['genre', 'rating', 'decade']:
-        if col_type in row and not pd.isna(row[col_type]):
-            # Create the one-hot encoded column name
+
+    # Categorical one-hot columns named like "genre_Action" or "rating_PG-13"
+    for col_type in ['genre', 'rating', 'decade', 'country', 'director']:
+        if col_type in row and pd.notna(row[col_type]):
             encoded_col = f"{col_type}_{row[col_type]}"
             if encoded_col in feature_cols:
                 x[encoded_col] = 1
-    
-    # Debug: Show what features were set
-    non_zero = x.loc[:, (x != 0).any()].to_dict('records')
-    print(f"Features set: {non_zero[0] if non_zero else 'None'}")
-    
+
     return x
 
 
 def predict_gross(movie_a: str, movie_b: str,
                   df: pd.DataFrame,
                   model: Any,
-                  feature_cols: List[str]) -> Dict:
+                  feature_cols: List[str]) -> Dict[str, Any]:
     """
-    Predict which movie will have a higher gross.
-    Returns:
-        dict: Contains prediction results and any warnings
+    Predict which movie will have a higher gross using a regression model.
+    Returns a dictionary with predictions, actuals (if available), warnings, and winner name.
     """
-    print("\n=== Starting Prediction ===")
-    print(f"Comparing: {movie_a} vs {movie_b}")
-    
-    # Initialize output
-    out = {
+    out: Dict[str, Any] = {
         "ok": True,
         "warnings": [],
-        "gross_a": 0,
-        "gross_b": 0,
-        "predicted_gross_a": 0,
-        "predicted_gross_b": 0,
-        "predicted_winner": "Tie"
+        "gross_a": None,
+        "gross_b": None,
+        "predicted_gross_a": None,
+        "predicted_gross_b": None,
+        "predicted_winner": None
     }
 
     try:
-        # Find movie rows (case-insensitive match on movie name)
+        # find rows (case-insensitive)
         rows_a = df[df[ID_COL].str.casefold() == movie_a.casefold()]
         rows_b = df[df[ID_COL].str.casefold() == movie_b.casefold()]
 
@@ -319,67 +350,40 @@ def predict_gross(movie_a: str, movie_b: str,
             out["warnings"].append(f"Movie(s) not found: {', '.join(missing)}")
             return out
 
-        # Get most recent version if there are duplicates
         ra = rows_a.sort_values("year", ascending=False).iloc[0]
         rb = rows_b.sort_values("year", ascending=False).iloc[0]
 
-        print("\n=== Movie A Data ===")
-        print(ra[['name', 'year', 'genre', 'rating', 'score', 'gross', 'budget']].to_dict())
-        
-        print("\n=== Movie B Data ===")
-        print(rb[['name', 'year', 'genre', 'rating', 'score', 'gross', 'budget']].to_dict())
-
-        # Get predicted gross values
+        # Build feature vectors
         xa = _row_to_features(ra, feature_cols)[feature_cols]
         xb = _row_to_features(rb, feature_cols)[feature_cols]
-        
-        print("\n=== Feature Vectors ===")
-        print("Movie A features (non-zero):", xa.loc[:, (xa != 0).any()].to_dict('records')[0])
-        print("Movie B features (non-zero):", xb.loc[:, (xb != 0).any()].to_dict('records')[0])
-        
-        # Get predictions from model
+
+        # Predict
         try:
-            # Get predicted gross values
-            pred_gross_a = model.predict(xa)[0]
-            pred_gross_b = model.predict(xb)[0]
-            
-            # Store predictions
-            out["predicted_gross_a"] = pred_gross_a
-            out["predicted_gross_b"] = pred_gross_b
-            
-            # Use actual gross if available, otherwise use predicted
-            actual_gross_a = ra.get('gross', pred_gross_a)
-            actual_gross_b = rb.get('gross', pred_gross_b)
-            
-            out["gross_a"] = actual_gross_a
-            out["gross_b"] = actual_gross_b
-            
-            # Determine winner
-            if actual_gross_a > actual_gross_b:
-                out["predicted_winner"] = movie_a
-            elif actual_gross_b > actual_gross_a:
-                out["predicted_winner"] = movie_b
-            else:
-                out["predicted_winner"] = "Tie"
-            
-            print("\n=== Predicted Gross Values ===")
-            print(f"{movie_a}: ${pred_gross_a:,.2f} (actual: ${actual_gross_a:,.2f} if available)")
-            print(f"{movie_b}: ${pred_gross_b:,.2f} (actual: ${actual_gross_b:,.2f} if available)")
-            print(f"\n=== Predicted Winner ===")
-            print(f"{out['predicted_winner']} is predicted to have higher gross")
-            
+            pred_gross_a = float(model.predict(xa)[0])
+            pred_gross_b = float(model.predict(xb)[0])
         except Exception as e:
-            out["warnings"].append(f"Prediction warning: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            
+            out["ok"] = False
+            out["warnings"].append(f"Model prediction failed: {e}")
+            return out
+
+        out["predicted_gross_a"] = pred_gross_a
+        out["predicted_gross_b"] = pred_gross_b
+        out["gross_a"] = ra.get("gross", None)
+        out["gross_b"] = rb.get("gross", None)
+
+        if pred_gross_a > pred_gross_b:
+            out["predicted_winner"] = movie_a
+        elif pred_gross_b > pred_gross_a:
+            out["predicted_winner"] = movie_b
+        else:
+            out["predicted_winner"] = "Tie"
+
+        return out
+
     except Exception as e:
         out["ok"] = False
-        out["warnings"].append(f"Error: {str(e)}")
-        import traceback
-        traceback.print_exc()
-    
-    return out
+        out["warnings"].append(f"Error during prediction: {e}")
+        return out
 
 
 # -----------------------
@@ -400,3 +404,39 @@ def generate_insights(df: pd.DataFrame) -> pd.DataFrame:
           .reset_index(name="median_gross_adj")
     )
     return g
+
+
+# -----------------------
+# Model artifact helpers (NEW)
+# -----------------------
+def load_model_artifact(path: Union[str, Path]) -> Dict[str, Any]:
+    """
+    Load a joblib model artifact saved by model.py or similar.
+    Expected artifact format: dict with keys 'model' and 'feature_cols'.
+    """
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(f"Model artifact not found at: {path}")
+
+    artifact = joblib.load(str(p))
+
+    if not isinstance(artifact, dict):
+        raise ValueError("Model artifact should be a dict with keys 'model' and 'feature_cols'")
+
+    if "model" not in artifact or "feature_cols" not in artifact:
+        raise ValueError("Model artifact missing required keys: 'model' and 'feature_cols'")
+
+    return artifact
+
+
+def predict_with_saved_model(movie_a: str, movie_b: str, df: pd.DataFrame, model_artifact: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Convenience wrapper that accepts a loaded artifact (with 'model' and 'feature_cols')
+    and calls the existing predict_gross function.
+    """
+    model = model_artifact.get("model")
+    feature_cols = model_artifact.get("feature_cols")
+    if model is None or feature_cols is None:
+        raise ValueError("Invalid model_artifact: must contain 'model' and 'feature_cols'")
+
+    return predict_gross(movie_a=movie_a, movie_b=movie_b, df=df, model=model, feature_cols=feature_cols)

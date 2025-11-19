@@ -107,16 +107,40 @@ with tab1:
     # ---------- Predict ----------
     @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
     def get_model_bundle(use_improved: bool = False):
+        import time
+        from datetime import datetime
+        
         df = load_processed()
         if use_improved:
             model, feature_cols, score = train_improved(df)
+            model_type = "improved"
         else:
             model, feature_cols, score = train_baseline(df)
-        return df, model, feature_cols, score
+            model_type = "baseline"
+            
+        # Add timestamp for when the model was trained
+        train_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return df, model, feature_cols, score, train_timestamp, model_type
 
     if st.button("Predict"):
         use_improved = model_type == "Improved (More Accurate)"
-        df, model, feature_cols, score = get_model_bundle(use_improved=use_improved)
+        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(use_improved=use_improved)
+        
+        # Display model info
+        st.sidebar.subheader("Model Information")
+        st.sidebar.metric("Model Type", model_type_name.capitalize())
+        st.sidebar.metric("R² Score", f"{score:.3f}")
+        st.sidebar.caption(f"Last trained: {train_timestamp}")
+        
+        # Get movie years for display
+        def get_movie_year(movie_name):
+            movie_row = df[df[title_col].str.casefold() == movie_name.casefold()].iloc[0]
+            return int(movie_row['year']) if 'year' in movie_row and pd.notna(movie_row['year']) else None
+            
+        year_a = get_movie_year(movie_a)
+        year_b = get_movie_year(movie_b)
+        
         res = predict_gross(movie_a, movie_b, df, model, feature_cols)
 
         if not res["ok"]:
@@ -163,7 +187,7 @@ with tab1:
                 
                 # Show the metric with actual as main value and prediction as delta
                 st.metric(
-                    movie_a,
+                    f"{movie_a} ({year_a})" if year_a else movie_a,
                     f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
                     delta=delta_text_a,
                     delta_color=delta_color_a
@@ -176,7 +200,7 @@ with tab1:
                 
                 # Show the metric with actual as main value and prediction as delta
                 st.metric(
-                    movie_b,
+                    f"{movie_b} ({year_b})" if year_b else movie_b,
                     f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
                     delta=delta_text_b,
                     delta_color=delta_color_b

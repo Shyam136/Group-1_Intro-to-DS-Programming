@@ -24,7 +24,9 @@ from apputil import (
     train_improved,
     load_data, 
     predict_gross, 
-    generate_insights
+    generate_insights,
+    ID_COL,
+    _row_to_features,
 )
 
 tab1, tab2 = st.tabs(["Main App", "MVP Features"])
@@ -105,16 +107,40 @@ with tab1:
     # ---------- Predict ----------
     @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
     def get_model_bundle(use_improved: bool = False):
+        import time
+        from datetime import datetime
+        
         df = load_processed()
         if use_improved:
             model, feature_cols, score = train_improved(df)
+            model_type = "improved"
         else:
             model, feature_cols, score = train_baseline(df)
-        return df, model, feature_cols, score
+            model_type = "baseline"
+            
+        # Add timestamp for when the model was trained
+        train_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return df, model, feature_cols, score, train_timestamp, model_type
 
     if st.button("Predict"):
         use_improved = model_type == "Improved (More Accurate)"
-        df, model, feature_cols, score = get_model_bundle(use_improved=use_improved)
+        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(use_improved=use_improved)
+        
+        # Display model info
+        st.sidebar.subheader("Model Information")
+        st.sidebar.metric("Model Type", model_type_name.capitalize())
+        st.sidebar.metric("R² Score", f"{score:.3f}")
+        st.sidebar.caption(f"Last trained: {train_timestamp}")
+        
+        # Get movie years for display
+        def get_movie_year(movie_name):
+            movie_row = df[df[title_col].str.casefold() == movie_name.casefold()].iloc[0]
+            return int(movie_row['year']) if 'year' in movie_row and pd.notna(movie_row['year']) else None
+            
+        year_a = get_movie_year(movie_a)
+        year_b = get_movie_year(movie_b)
+        
         res = predict_gross(movie_a, movie_b, df, model, feature_cols)
 
         if not res["ok"]:
@@ -161,7 +187,7 @@ with tab1:
                 
                 # Show the metric with actual as main value and prediction as delta
                 st.metric(
-                    movie_a,
+                    f"{movie_a} ({year_a})" if year_a else movie_a,
                     f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
                     delta=delta_text_a,
                     delta_color=delta_color_a
@@ -174,24 +200,39 @@ with tab1:
                 
                 # Show the metric with actual as main value and prediction as delta
                 st.metric(
-                    movie_b,
+                    f"{movie_b} ({year_b})" if year_b else movie_b,
                     f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
                     delta=delta_text_b,
                     delta_color=delta_color_b
                 )
             
-            # Calculate confidence level (0-100%)
-            def calculate_confidence(gross_a, gross_b):
-                if gross_a == 0 and gross_b == 0:
-                    return 50  # Neutral confidence for tie
-                total = abs(gross_a) + abs(gross_b)
-                if total == 0:
-                    return 50
-                confidence = (max(gross_a, gross_b) / total) * 100
-                return min(max(confidence, 55), 95)  # Keep between 55-95% for visual distinction
+            def calculate_confidence(model, xa, xb):
+                """Calculate confidence based on model's predictions across all trees"""
+                # Convert to numpy arrays to avoid feature name warnings
+                xa_array = xa.values.reshape(1, -1)
+                xb_array = xb.values.reshape(1, -1)
+                
+                # Get predictions from all trees for both movies
+                preds_a = [tree.predict(xa_array)[0] for tree in model.estimators_]
+                preds_b = [tree.predict(xb_array)[0] for tree in model.estimators_]
+                
+                # Count how often movie A is predicted to gross more than B
+                a_wins = sum(1 for a, b in zip(preds_a, preds_b) if a > b)
+                confidence = (a_wins / len(preds_a)) * 100
+                
+                # Return confidence between 50-100% (since we don't care which is higher, just how certain)
+                return max(min(confidence, 95), 100 - confidence)
 
-            # Calculate confidence for the prediction
-            confidence = calculate_confidence(pred_gross_a, pred_gross_b)
+            # Calculate confidence using model's predictions
+            try:
+                # Get the feature vectors for both movies
+                xa = _row_to_features(df[df[ID_COL].str.casefold() == movie_a.casefold()].iloc[0], feature_cols)[feature_cols]
+                xb = _row_to_features(df[df[ID_COL].str.casefold() == movie_b.casefold()].iloc[0], feature_cols)[feature_cols]
+                confidence = calculate_confidence(model, xa, xb)
+            except Exception as e:
+                print(f"Error calculating confidence: {e}")
+                #fallback value
+                confidence = 60
             
             # Show winner with confidence indicator
             if res['predicted_winner'] != "Tie":

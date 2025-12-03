@@ -13,9 +13,8 @@ To be replaced later with real data, models, and visuals.
 from __future__ import annotations
 
 import streamlit as st
-import joblib
 import pandas as pd
-from typing import Any, Iterable
+from typing import Iterable
 
 # Import helpers from apputil.py
 from apputil import (
@@ -107,7 +106,6 @@ with tab1:
     # ---------- Predict ----------
     @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
     def get_model_bundle(use_improved: bool = False):
-        import time
         from datetime import datetime
         
         df = load_processed()
@@ -155,16 +153,9 @@ with tab1:
             # Display results in two columns
             col1, col2 = st.columns(2)
             
-            # Add custom CSS for larger delta value and arrow
+            # Add custom CSS for better styling
             st.markdown("""
             <style>
-                [data-testid="stMetricDelta"] div {
-                    font-size: 1.2rem !important;
-                    font-weight: bold !important;
-                }
-                .stProgress > div > div > div > div {
-                    background-color: #2ecc71;
-                }
                 .stMarkdown h3 {
                     margin-top: 0;
                 }
@@ -174,37 +165,82 @@ with tab1:
             </style>
             """, unsafe_allow_html=True)
             
-            # Helper function to get delta style
-            def get_delta_style(actual, predicted):
-                if actual == 0 or predicted == 0:
-                    return "normal"
-                return "inverse" if predicted < actual else "normal"
+            def get_prediction_style(actual, predicted, value):
+                """
+                Returns a tuple of (formatted_text, color, bg_color) based on the comparison
+                between actual and predicted values.
+                """
+                if predicted > actual:
+                    # green background
+                    return f"↑ ${value:,.2f}", "white", "green" 
+                elif predicted < actual:
+                    # darkred background
+                    return f"↓ ${value:,.2f}", "white" , "darkred" 
+                else:
+                    # gray background
+                    return f"→ ${value:,.2f}", "white", "gray"  
             
             with col1:
-                # Get delta style for movie A
-                delta_color_a = get_delta_style(actual_gross_a, pred_gross_a)
-                delta_text_a = f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None
+                # Get prediction style for movie A
+                delta_text_a, text_color_a, bg_color_a = get_prediction_style(actual_gross_a, pred_gross_a, pred_gross_a)
                 
-                # Show the metric with actual as main value and prediction as delta
-                st.metric(
-                    f"{movie_a} ({year_a})" if year_a else movie_a,
-                    f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
-                    delta=delta_text_a,
-                    delta_color=delta_color_a
-                )
+                # Format the actual gross value
+                actual_display = f"${actual_gross_a:,.2f}" if actual_gross_a > 0 else "N/A"
+                year_display = f" ({year_a})"
+                
+                # Show the metric with actual as main value and prediction with arrow
+                st.markdown(f"""
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">{movie_a}{year_display}</h3>
+                    <p style="margin: 0.5rem 0; font-size: 2.5rem; font-weight: 500;">
+                        Actual: {actual_display}
+                    </p>
+                    <div style="
+                        display: inline-block;
+                        background-color: {bg_color_a};
+                        color: {text_color_a};
+                        padding: 0.75rem 1.25rem;
+                        border-radius: 2rem;
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        margin: 0.5rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    ">
+                        {delta_text_a if delta_text_a else ''}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col2:
-                # Get delta style for movie B
-                delta_color_b = get_delta_style(actual_gross_b, pred_gross_b)
-                delta_text_b = f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None
+                # Get prediction style for movie B
+                delta_text_b, text_color_b, bg_color_b = get_prediction_style(actual_gross_b, pred_gross_b, pred_gross_b)
                 
-                # Show the metric with actual as main value and prediction as delta
-                st.metric(
-                    f"{movie_b} ({year_b})" if year_b else movie_b,
-                    f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
-                    delta=delta_text_b,
-                    delta_color=delta_color_b
-                )
+                # Format the actual gross value
+                actual_display = f"${actual_gross_b:,.2f}" if actual_gross_b > 0 else "N/A"
+                year_display = f" ({year_b})"
+                
+                # Show the metric with actual as main value and prediction with arrow
+                st.markdown(f"""
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">{movie_b}{year_display}</h3>
+                    <p style="margin: 0.5rem 0; font-size: 2.5rem; font-weight: 500;">
+                        Actual: {actual_display}
+                    </p>
+                    <div style="
+                        display: inline-block;
+                        background-color: {bg_color_b};
+                        color: {text_color_b};
+                        padding: 0.75rem 1.25rem;
+                        border-radius: 2rem;
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        margin: 0.5rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    ">
+                        {delta_text_b if delta_text_b else ''}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
             
             def calculate_confidence(model, xa, xb):
                 """Calculate confidence based on model's predictions across all trees"""

@@ -289,11 +289,6 @@ def train_improved(df: pd.DataFrame, random_state: int = 42):
 # -----------------------
 def _row_to_features(row: pd.Series, feature_cols: List[str]) -> pd.DataFrame:
     """Convert a single movie row to the same feature columns used in training."""
-    # Debugging prints (helpful during development)
-    try:
-        print(f"\n=== Processing: {row.get(ID_COL, 'Unknown')} ===")
-    except Exception:
-        pass
 
     # Initialize with zeros
     x = pd.DataFrame(0, index=[0], columns=feature_cols)

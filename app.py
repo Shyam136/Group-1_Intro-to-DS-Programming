@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 from typing import Iterable
 
 # Import helpers from apputil.py
@@ -317,6 +318,40 @@ with tab1:
                 """, unsafe_allow_html=True)
             
             # Show any warnings in a collapsible section
+            # Feature importance chart
+            try:
+                if hasattr(model, "feature_importances_") and feature_cols:
+                    feat_df = pd.DataFrame({
+                        'Feature': feature_cols,
+                        'Importance': model.feature_importances_
+                    })
+
+                    # Filter and sort for a clean horizontal bar chart
+                    feat_df = feat_df[feat_df['Importance'] > 0].sort_values(by='Importance', ascending=True)
+
+                    if not feat_df.empty:
+                        fig = px.bar(
+                            feat_df,
+                            x='Importance',
+                            y='Feature',
+                            orientation='h',
+                            title='Feature Importance of Trained Model',
+                            labels={'Importance': 'Importance', 'Feature': 'Feature'},
+                            color_discrete_sequence=['steelblue']
+                        )
+
+                        fig.update_layout(
+                            xaxis_title='Importance',
+                            yaxis_title='Feature',
+                            margin=dict(l=100, r=20, t=50, b=50),
+                            height=600
+                        )
+
+                        st.subheader('Feature importances')
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.warning(f"Could not generate feature importance chart: {e}")
+
             if res.get('warnings'):
                 with st.expander("⚠️ Note"):
                     st.warning("\n".join(res['warnings']))

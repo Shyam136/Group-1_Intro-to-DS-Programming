@@ -52,6 +52,17 @@ with tab1:
         ["Baseline (Faster)", "Improved (More Accurate)"],
         help="Baseline is faster but less accurate. Improved uses more features but may be slower."
     )
+    
+    # Add fairness-aware mode toggle
+    fair_mode = st.sidebar.checkbox(
+        "Fairness-aware mode (exclude genre from predictions)",
+        help="When enabled, the model will not use genre information to make predictions, which may help reduce bias against certain film genres."
+    )
+    
+    if fair_mode:
+        st.sidebar.info("Fairness mode is on. Genre information will be excluded from predictions to reduce potential bias.")
+    else:
+        st.sidebar.info("Standard mode. Using all available features including genre for predictions.")
 
     # ---------- Data loading ----------
     @st.cache_data(show_spinner=True)
@@ -106,15 +117,16 @@ with tab1:
 
     # ---------- Predict ----------
     @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
-    def get_model_bundle(use_improved: bool = False):
+    def get_model_bundle(use_improved: bool = False, exclude_genre: bool = False):
         from datetime import datetime
         
         df = load_processed()
+        
         if use_improved:
-            model, feature_cols, score = train_improved(df)
+            model, feature_cols, score = train_improved(df, exclude_genre=exclude_genre)
             model_type = "improved"
         else:
-            model, feature_cols, score = train_baseline(df)
+            model, feature_cols, score = train_baseline(df, exclude_genre=exclude_genre)
             model_type = "baseline"
             
         # Add timestamp for when the model was trained
@@ -124,7 +136,10 @@ with tab1:
 
     if st.button("Predict"):
         use_improved = model_type == "Improved (More Accurate)"
-        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(use_improved=use_improved)
+        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(
+            use_improved=use_improved,
+            exclude_genre=fair_mode
+        )
         
         # Display model info
         st.sidebar.subheader("Model Information")

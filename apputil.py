@@ -161,14 +161,22 @@ def prepare_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, List[st
     return X, y, feature_cols
 
 
-def prepare_features_for_regression(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, List[str]]:
+def prepare_features_for_regression(df: pd.DataFrame, exclude_genre: bool = False) -> Tuple[pd.DataFrame, pd.Series, List[str]]:
     """
     Prepare features and target for regression (predicting gross).
-    Returns (X, y, feature_cols).
+    
+    Args:
+        df: Input DataFrame containing the data
+        exclude_genre: If True, exclude the 'genre' feature to reduce bias
+        
+    Returns:
+        Tuple of (X, y, feature_cols)
     """
     df = df.copy()
 
     available_numerics, available_categoricals = _get_available_columns(df)
+    if exclude_genre and 'genre' in available_categoricals:
+        available_categoricals.remove('genre')
 
     if "gross" not in df.columns:
         raise ValueError("'gross' column not found in the dataset for regression target")
@@ -204,7 +212,7 @@ def prepare_features_for_regression(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.
 # -----------------------
 # Training (baseline)
 # -----------------------
-def train_baseline(df: pd.DataFrame, random_state: int = 42):
+def train_baseline(df: pd.DataFrame, random_state: int = 42, exclude_features: List[str] = None):
     """
     Train a baseline regression model to predict gross values.
     Returns: (model, feature_cols, r2)
@@ -217,7 +225,7 @@ def train_baseline(df: pd.DataFrame, random_state: int = 42):
         NUMERICS = ["runtime", "budget_adj", "year"]
         CATEGORICALS = ["genre", "rating"]
 
-        X, y, feature_cols = prepare_features_for_regression(df)
+        X, y, feature_cols = prepare_features_for_regression(df, exclude_features=exclude_features)
 
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=random_state
@@ -241,7 +249,7 @@ def train_baseline(df: pd.DataFrame, random_state: int = 42):
         CATEGORICALS = original_categoricals
 
 
-def train_improved(df: pd.DataFrame, random_state: int = 42):
+def train_improved(df: pd.DataFrame, random_state: int = 42, exclude_features: List[str] = None):
     """
     Train a stronger regression model using more features.
     Returns: (model, feature_cols, r2)
@@ -258,7 +266,7 @@ def train_improved(df: pd.DataFrame, random_state: int = 42):
             df["budget_year_ratio"] = df["budget_adj"] / (df["year"] - df["year"].min() + 1)
             NUMERICS.append("budget_year_ratio")
 
-        X, y, feature_cols = prepare_features_for_regression(df)
+        X, y, feature_cols = prepare_features_for_regression(df, exclude_features=exclude_features)
 
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=random_state

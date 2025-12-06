@@ -29,7 +29,7 @@ from apputil import (
     _row_to_features,
 )
 
-tab1, tab2 = st.tabs(["Main App", "MVP Features"])
+tab1, tab2 = st.tabs(["Main App", "Project Overview"])
 
 # ---------- Page setup ----------
 
@@ -404,33 +404,53 @@ with tab1:
         st.info(f"(Insights pending) {e}")
 
 with tab2:
-    st.subheader("Current Progress")
-    st.markdown("""
-    ##### Our group has completed the baseline and improved models, integrated them with the Streamlit app, and successfully tested predictions between movies.
-    ##### The models are now saving correctly, and results can be visualized in the app.
-    """)
+    st.header("Project Overview")
     
-    st.subheader("Next Steps")
     st.markdown("""
-    #### Model Optimization
-    - Continue tuning the Random Forest and Gradient Boosting models to improve prediction accuracy and consistency.
-
-    #### App Optimization
-    - Streamline the Streamlit interface - cleaner layout, faster load time, and clearer result visuals.
-
-    #### Feature Insights
-    - Add feature importance and genre-based performance charts to help users understand why the model predicts certain outcomes.
-
-    #### Automation (Undecided)
-    - Implement a small Python script to generate weekly summary reports of model metrics.
-    """)
-
-    st.subheader("Roadblocks")
-    st.markdown("""
-    - Fixing a module import issue in the Jupyter notebook "ModuleNotFoundError: model"
-    - Optimizing the model's performance to improve prediction accuracy and consistency.
-    - We found that our models aren't as accurate as expected
-    - Some UI changes on the streamlit app.
+    ### The Problem
+    In today's competitive film industry, accurately predicting a movie's financial success is more important than ever. 
+    Our tool addresses the challenge of estimating box office potential by providing a data-driven approach to compare 
+    movies based on their historical performance metrics and key attributes.
+    
+    ### Key Features
+    - **Head to Head Analysis**: Directly compare two movies' predicted performance
+    - **Fairness Mode**: Option to exclude genre bias for more objective comparisons
+    - **Advanced Modeling**: Utilizes machine learning to analyze complex patterns in movie success
+    - **Inflation-Adjusted Metrics**: Ensures accurate comparisons across different time periods
+    - **Interactive Interface**: User-friendly controls for predictions and comparisons
+    
+    ### Who Benefits
+    - **Film Producers & Studios**: Make data-informed decisions about which projects to greenlight
+    - **Investors**: Evaluate potential returns on film investments
+    - **Distributors**: Plan marketing and distribution strategies
+    - **Film Enthusiasts**: Gain insights into what makes movies financially successful
+    
+    ### How It Works
+    1. Choose between our baseline or improved prediction model
+    2. Toggle the 'Fairness Mode' to remove genre prediction bias.
+    3. Select two movies from our comprehensive database
+    4. View detailed predictions
+    
+    ### Dataset Overview
+    - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies)
+    - **Size**: 5,075 movies with complete financial data
+    - **Time Period**: 1980-2020
+    - **Key Features**:
+      - Budget & Gross Revenue (inflation-adjusted)
+      - Runtime, Score, and Votes
+      - Genre, Rating, and Release Year
+      - Director, Writer, and Star information
+      - Production Company
+    
+    ### Team
+    - Shyam (Project Lead)
+    - Adam (Data Visualizations)
+    - Neville (Data Preprocessing)
+    - Lauren (Documentation) 
+    - Noor (UI/Testing)
+    
+    
+    *Built with Python and Streamlit*
     """)
 # ---------- Footer ----------
 st.divider()

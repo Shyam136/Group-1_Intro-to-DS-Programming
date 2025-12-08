@@ -13,9 +13,9 @@ To be replaced later with real data, models, and visuals.
 from __future__ import annotations
 
 import streamlit as st
-import joblib
 import pandas as pd
-from typing import Any, Iterable
+import plotly.express as px
+from typing import Iterable
 
 # Import helpers from apputil.py
 from apputil import (
@@ -29,7 +29,7 @@ from apputil import (
     _row_to_features,
 )
 
-tab1, tab2 = st.tabs(["Main App", "MVP Features"])
+tab1, tab2 = st.tabs(["Main App", "Project Overview"])
 
 # ---------- Page setup ----------
 
@@ -52,6 +52,17 @@ with tab1:
         ["Baseline (Faster)", "Improved (More Accurate)"],
         help="Baseline is faster but less accurate. Improved uses more features but may be slower."
     )
+    
+    # Add fairness-aware mode toggle
+    fair_mode = st.sidebar.checkbox(
+        "Fairness-aware mode (exclude genre from predictions)",
+        help="When enabled, the model will not use genre information to make predictions, which may help reduce bias against certain film genres."
+    )
+    
+    if fair_mode:
+        st.sidebar.info("Fairness mode is on. Genre information will be excluded from predictions to reduce potential bias.")
+    else:
+        st.sidebar.info("Standard mode. Using all available features including genre for predictions.")
 
     # ---------- Data loading ----------
     @st.cache_data(show_spinner=True)
@@ -106,16 +117,16 @@ with tab1:
 
     # ---------- Predict ----------
     @st.cache_resource  # cache model across reruns/users (Streamlit guidance)
-    def get_model_bundle(use_improved: bool = False):
-        import time
+    def get_model_bundle(use_improved: bool = False, exclude_genre: bool = False):
         from datetime import datetime
         
         df = load_processed()
+        
         if use_improved:
-            model, feature_cols, score = train_improved(df)
+            model, feature_cols, score = train_improved(df, exclude_genre=exclude_genre)
             model_type = "improved"
         else:
-            model, feature_cols, score = train_baseline(df)
+            model, feature_cols, score = train_baseline(df, exclude_genre=exclude_genre)
             model_type = "baseline"
             
         # Add timestamp for when the model was trained
@@ -125,7 +136,10 @@ with tab1:
 
     if st.button("Predict"):
         use_improved = model_type == "Improved (More Accurate)"
-        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(use_improved=use_improved)
+        df, model, feature_cols, score, train_timestamp, model_type_name = get_model_bundle(
+            use_improved=use_improved,
+            exclude_genre=fair_mode
+        )
         
         # Display model info
         st.sidebar.subheader("Model Information")
@@ -155,16 +169,9 @@ with tab1:
             # Display results in two columns
             col1, col2 = st.columns(2)
             
-            # Add custom CSS for larger delta value and arrow
+            # Add custom CSS for better styling
             st.markdown("""
             <style>
-                [data-testid="stMetricDelta"] div {
-                    font-size: 1.2rem !important;
-                    font-weight: bold !important;
-                }
-                .stProgress > div > div > div > div {
-                    background-color: #2ecc71;
-                }
                 .stMarkdown h3 {
                     margin-top: 0;
                 }
@@ -174,37 +181,82 @@ with tab1:
             </style>
             """, unsafe_allow_html=True)
             
-            # Helper function to get delta style
-            def get_delta_style(actual, predicted):
-                if actual == 0 or predicted == 0:
-                    return "normal"
-                return "inverse" if predicted < actual else "normal"
+            def get_prediction_style(actual, predicted, value):
+                """
+                Returns a tuple of (formatted_text, color, bg_color) based on the comparison
+                between actual and predicted values.
+                """
+                if predicted > actual:
+                    # green background
+                    return f"↑ ${value:,.2f}", "white", "green" 
+                elif predicted < actual:
+                    # darkred background
+                    return f"↓ ${value:,.2f}", "white" , "darkred" 
+                else:
+                    # gray background
+                    return f"→ ${value:,.2f}", "white", "gray"  
             
             with col1:
-                # Get delta style for movie A
-                delta_color_a = get_delta_style(actual_gross_a, pred_gross_a)
-                delta_text_a = f"Predicted: ${pred_gross_a:,.2f}" if pred_gross_a > 0 else None
+                # Get prediction style for movie A
+                delta_text_a, text_color_a, bg_color_a = get_prediction_style(actual_gross_a, pred_gross_a, pred_gross_a)
                 
-                # Show the metric with actual as main value and prediction as delta
-                st.metric(
-                    f"{movie_a} ({year_a})" if year_a else movie_a,
-                    f"Actual: ${actual_gross_a:,.2f}" if actual_gross_a > 0 else "Actual: N/A",
-                    delta=delta_text_a,
-                    delta_color=delta_color_a
-                )
+                # Format the actual gross value
+                actual_display = f"${actual_gross_a:,.2f}" if actual_gross_a > 0 else "N/A"
+                year_display = f" ({year_a})"
+                
+                # Show the metric with actual as main value and prediction with arrow
+                st.markdown(f"""
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">{movie_a}{year_display}</h3>
+                    <p style="margin: 0.5rem 0; font-size: 2.5rem; font-weight: 500;">
+                        Actual: {actual_display}
+                    </p>
+                    <div style="
+                        display: inline-block;
+                        background-color: {bg_color_a};
+                        color: {text_color_a};
+                        padding: 0.75rem 1.25rem;
+                        border-radius: 2rem;
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        margin: 0.5rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    ">
+                        {delta_text_a if delta_text_a else ''}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col2:
-                # Get delta style for movie B
-                delta_color_b = get_delta_style(actual_gross_b, pred_gross_b)
-                delta_text_b = f"Predicted: ${pred_gross_b:,.2f}" if pred_gross_b > 0 else None
+                # Get prediction style for movie B
+                delta_text_b, text_color_b, bg_color_b = get_prediction_style(actual_gross_b, pred_gross_b, pred_gross_b)
                 
-                # Show the metric with actual as main value and prediction as delta
-                st.metric(
-                    f"{movie_b} ({year_b})" if year_b else movie_b,
-                    f"Actual: ${actual_gross_b:,.2f}" if actual_gross_b > 0 else "Actual: N/A",
-                    delta=delta_text_b,
-                    delta_color=delta_color_b
-                )
+                # Format the actual gross value
+                actual_display = f"${actual_gross_b:,.2f}" if actual_gross_b > 0 else "N/A"
+                year_display = f" ({year_b})"
+                
+                # Show the metric with actual as main value and prediction with arrow
+                st.markdown(f"""
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">{movie_b}{year_display}</h3>
+                    <p style="margin: 0.5rem 0; font-size: 2.5rem; font-weight: 500;">
+                        Actual: {actual_display}
+                    </p>
+                    <div style="
+                        display: inline-block;
+                        background-color: {bg_color_b};
+                        color: {text_color_b};
+                        padding: 0.75rem 1.25rem;
+                        border-radius: 2rem;
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        margin: 0.5rem 0;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    ">
+                        {delta_text_b if delta_text_b else ''}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
             
             def calculate_confidence(model, xa, xb):
                 """Calculate confidence based on model's predictions across all trees"""
@@ -281,6 +333,40 @@ with tab1:
                 """, unsafe_allow_html=True)
             
             # Show any warnings in a collapsible section
+            # Feature importance chart
+            try:
+                if hasattr(model, "feature_importances_") and feature_cols:
+                    feat_df = pd.DataFrame({
+                        'Feature': feature_cols,
+                        'Importance': model.feature_importances_
+                    })
+
+                    # Filter and sort for a clean horizontal bar chart
+                    feat_df = feat_df[feat_df['Importance'] > 0].sort_values(by='Importance', ascending=True)
+
+                    if not feat_df.empty:
+                        fig = px.bar(
+                            feat_df,
+                            x='Importance',
+                            y='Feature',
+                            orientation='h',
+                            title='Feature Importance of Trained Model',
+                            labels={'Importance': 'Importance', 'Feature': 'Feature'},
+                            color_discrete_sequence=['steelblue']
+                        )
+
+                        fig.update_layout(
+                            xaxis_title='Importance',
+                            yaxis_title='Feature',
+                            margin=dict(l=100, r=20, t=50, b=50),
+                            height=600
+                        )
+
+                        st.subheader('Feature importances')
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.warning(f"Could not generate feature importance chart: {e}")
+
             if res.get('warnings'):
                 with st.expander("⚠️ Note"):
                     st.warning("\n".join(res['warnings']))
@@ -318,33 +404,53 @@ with tab1:
         st.info(f"(Insights pending) {e}")
 
 with tab2:
-    st.subheader("Current Progress")
-    st.markdown("""
-    ##### Our group has completed the baseline and improved models, integrated them with the Streamlit app, and successfully tested predictions between movies.
-    ##### The models are now saving correctly, and results can be visualized in the app.
-    """)
+    st.header("Project Overview")
     
-    st.subheader("Next Steps")
     st.markdown("""
-    #### Model Optimization
-    - Continue tuning the Random Forest and Gradient Boosting models to improve prediction accuracy and consistency.
-
-    #### App Optimization
-    - Streamline the Streamlit interface - cleaner layout, faster load time, and clearer result visuals.
-
-    #### Feature Insights
-    - Add feature importance and genre-based performance charts to help users understand why the model predicts certain outcomes.
-
-    #### Automation (Undecided)
-    - Implement a small Python script to generate weekly summary reports of model metrics.
-    """)
-
-    st.subheader("Roadblocks")
-    st.markdown("""
-    - Fixing a module import issue in the Jupyter notebook "ModuleNotFoundError: model"
-    - Optimizing the model's performance to improve prediction accuracy and consistency.
-    - We found that our models aren't as accurate as expected
-    - Some UI changes on the streamlit app.
+    ### The Problem
+    In today's competitive film industry, accurately predicting a movie's financial success is more important than ever. 
+    Our tool addresses the challenge of estimating box office potential by providing a data-driven approach to compare 
+    movies based on their historical performance metrics and key attributes.
+    
+    ### Key Features
+    - **Head to Head Analysis**: Directly compare two movies' predicted performance
+    - **Fairness Mode**: Option to exclude genre bias for more objective comparisons
+    - **Advanced Modeling**: Utilizes machine learning to analyze complex patterns in movie success
+    - **Inflation-Adjusted Metrics**: Ensures accurate comparisons across different time periods
+    - **Interactive Interface**: User-friendly controls for predictions and comparisons
+    
+    ### Who Benefits
+    - **Film Producers & Studios**: Make data-informed decisions about which projects to greenlight
+    - **Investors**: Evaluate potential returns on film investments
+    - **Distributors**: Plan marketing and distribution strategies
+    - **Film Enthusiasts**: Gain insights into what makes movies financially successful
+    
+    ### How It Works
+    1. Choose between our baseline or improved prediction model
+    2. Toggle the 'Fairness Mode' to remove genre prediction bias.
+    3. Select two movies from our comprehensive database
+    4. View detailed predictions
+    
+    ### Dataset Overview
+    - **Source**: [Movie Industry Dataset](https://www.kaggle.com/datasets/danielgrijalvas/movies)
+    - **Size**: 5,075 movies with complete financial data
+    - **Time Period**: 1980-2020
+    - **Key Features**:
+      - Budget & Gross Revenue (inflation-adjusted)
+      - Runtime, Score, and Votes
+      - Genre, Rating, and Release Year
+      - Director, Writer, and Star information
+      - Production Company
+    
+    ### Team
+    - Shyam (Project Lead)
+    - Adam (Data Visualizations)
+    - Neville (Data Preprocessing)
+    - Lauren (Documentation) 
+    - Noor (UI/Testing)
+    
+    
+    *Built with Python and Streamlit*
     """)
 # ---------- Footer ----------
 st.divider()

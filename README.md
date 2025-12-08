@@ -7,6 +7,9 @@ Studios and producers often need to estimate box office potential before committ
 
 The app uses Kaggle’s *Movie Industry Dataset* by Daniel Grijalvas, covering ~7,600 movies released between 1980–2020. Features include genre, rating, budget, gross revenue, runtime, and release year.  
 
+
+Here is a link to our access our Streamlit app: https://group-1intro-to-ds-programming-agcjayrkwrerqm8c8tvqxa.streamlit.app/
+
 ---
 
 ## Stakeholder Use Case
@@ -83,11 +86,11 @@ To keep the repo clean and consistent:
 
 ### Feature Importance Within Our Model
 
+![Feature Importance For the Model](figures/improved/feature_importance_tuned_model.png)
+
+### Feature Importance Comparison Between Our Models
+
 ![Feature Comparison Between Two Models](figures/improved/feature_importance_comparison.png)
-
-### Genre Profit Margin Trends
-
-![Genre Profit Margin Trends](figures/improved/genre_profit_margin.png)
 
 ## Preliminary Results & Insights
 ### Exploratory Data Analysis (EDA)

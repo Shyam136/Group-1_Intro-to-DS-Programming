@@ -77,10 +77,16 @@ To keep the repo clean and consistent:
 
 ---
 
-## Ethical Concerns (to expand later)  
-- Dataset bias: focuses only on U.S. domestic box office.  
-- Does not account for streaming, global markets, movies which were not initially theatrical releases or post-release reception.  
-- Predictions should not be seen as guarantees but as exploratory guidance.
+## Ethical Concerns 
+- Data
+  - Representation Bias - Movie details are volunteer driven and site was not available in translation for non-english speakers until 2008
+  - Measurement Bias - IMBd ratings and Budgets and Revenue can act as a proxy for 'quality', but they are not, and can thus bias audiences or model users against specific genres of film
+- Model
+  -  Dataset bias: focuses only on U.S. domestic box office.  
+  - Does not account for streaming, global markets, movies which were not initially theatrical releases or post-release reception (only looked at Box Office Returns).
+  - Metric may not address the motive behind the problem statement. 
+- Model Deployment: Predictions should not be seen as guarantees but as exploratory guidance.
+- None of us were movie subject matter experts. 
 
 ## Visualizations
 
